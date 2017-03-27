@@ -1,0 +1,86 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+	<meta charset="UTF-8" />
+	<title>Phaser Template</title>
+	<link rel="stylesheet" href="css/fonts.css" type="text/css" media="screen" />
+
+	<script type="text/javascript" src="js/md5.js"></script>
+	<script type="text/javascript" src="js/phaser.min.js"></script>
+	<script type="text/javascript" src="js/phaser-debug.js"></script>
+	<script type="text/javascript" src="js/level_data.js"></script>
+	<script type="text/javascript" src="js/classes/Explosion.js"></script>
+	<script type="text/javascript" src="js/classes/Powerup.js"></script>
+	<script type="text/javascript" src="js/classes/Bullet.js"></script>
+	<script type="text/javascript" src="js/classes/Weapons.js"></script>
+	<script type="text/javascript" src="js/classes/Enemies.js"></script>
+	<script type="text/javascript" src="js/classes/Buddy.js"></script>
+	<script type="text/javascript" src="js/boot.js"></script>
+	<script type="text/javascript" src="js/preload.js"></script>
+	<script type="text/javascript" src="js/gametitle.js"></script>
+	<script type="text/javascript" src="js/gameplay.js"></script>
+	<script type="text/javascript" src="js/gameover.js"></script>
+	<script type="text/javascript" src="js/scoresummary.js"></script>
+	<script type="text/javascript" src="js/toptenscore.js"></script>
+	<script type="text/javascript" src="js/displayscores.js"></script>
+	<script type="text/javascript" src="js/cutscene.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+            text-align: center;
+        }
+        p{
+        	/*display:none;*/
+        	position: absolute;
+        	left:-9999px;
+        	font-family: "Tandysoft";
+        }
+        p.coders{
+        	font-family:"Coders";
+        }
+    </style>
+    <script>
+
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-72899943-2', 'none');
+  ga('send', 'pageview');
+
+</script>
+    <script type="text/javascript">
+		(function() {
+				// 		document.onkeydown = function (e) {
+			 //    	e = e || window.event;
+			 //    	// use e.keyCode
+			 //    	console.log(e.keyCode);
+			 //    	if (e.keyCode == 8) { // backspace
+			 //    		e.preventDefault()
+				// 	}
+				// };
+				//Create a new game that fills the screen
+				game = new Phaser.Game(1200,600, Phaser.AUTO, 'game-container');
+				
+				//Add all states
+				game.state.add("Boot", Boot);
+				game.state.add("Preload", Preload);
+				game.state.add("GameTitle", GameTitle);
+				game.state.add("Gameplay", Gameplay);
+				game.state.add("GameOver", GameOver);
+				game.state.add("Cutscene", Cutscene);
+				game.state.add("ScoreSummary", ScoreSummary);
+				game.state.add("TopTenScore", TopTenScore);
+				game.state.add("DisplayScores", DisplayScores);
+				//Start the first state
+				game.state.start("Boot");
+
+		})();
+    </script>
+    	
+</head>
+<body><p>.</p><p class = "coders">.</p>
+	<div id = "game-container"></div>
+</body>
+</html>

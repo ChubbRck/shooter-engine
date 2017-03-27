@@ -1,0 +1,31 @@
+{
+  "name": "lycogame",
+  "version": "0.8.0",
+  "description": "Interactive HTML5 game for Lycored",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-uglify": "^1.5.1",
+    "gulp-util": "^3.0.7"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/madwell/lycogame.git"
+  },
+  "keywords": [
+    "html5",
+    "phaser",
+    "game",
+    "beta",
+    "blasters",
+    "lycored"
+  ],
+  "author": "Nick Santaniello",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/madwell/lycogame#readme"
+}

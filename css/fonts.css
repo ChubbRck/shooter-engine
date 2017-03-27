@@ -1,0 +1,28 @@
+@font-face {
+    font-family: 'Coders';
+    src: url('../assets/fonts/coders-crux-2-webfont.eot');
+    src: url('../assets/fonts/coders-crux-2-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../assets/fonts/coders-crux-2-webfont.woff2') format('woff2'),
+         url('../assets/fonts/coders-crux-2-webfont.woff') format('woff'),
+         url('../assets/fonts/coders-crux-2-webfont.ttf') format('truetype'),
+         url('../assets/fonts/coders-crux-2-webfont.svg#coders_crux_2regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
+@font-face {
+    font-family: 'Tandysoft';
+    src: url('../assets/fonts/tandysoft-webfont.eot');
+    src: url('../assets/fonts/tandysoft-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../assets/fonts/tandysoft-webfont.woff2') format('woff2'),
+         url('../assets/fonts/tandysoft-webfont.woff') format('woff'),
+         url('../assets/fonts/tandysoft-webfont.ttf') format('truetype'),
+         url('../assets/fonts/tandysoft-webfont.svg#tandysoftregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
