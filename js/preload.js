@@ -4,25 +4,23 @@ Preload.prototype = {
 
 	preload: function(){ 
 
-		path = "/wp-content/themes/lycored/dist/images/"
 	    path = 'assets/'
 		game.time.advancedTiming = true;
-			//	These are the assets we loaded in Boot.js
-		//	A nice sparkly background and a loading progress bar
-		game.stage.backgroundColor = '#171717';
-		//this.background = this.add.sprite(0, 0, 'preloaderBackground');
-		// this.preloadBar = this.add.sprite(100, 300, 'preloaderBar');
+		
+		// Set up the assets loaded in boot.js
+		game.stage.backgroundColor = '#000';
+		
 		this.lycoloading = game.add.sprite(120,120,'lycoloading');
 	   	this.lycoloading.anchor.setTo(0.5,0.5);
-	   	this.lycoloading.x = 1200/2;
-	   	this.lycoloading.y = 600/2;
+	   	this.lycoloading.x = game.width/2;
+	   	this.lycoloading.y = game.height/2;
 	    this.lycoloading.animations.add('run');
 	    this.lycoloading.animations.play('run',15, true);
 
 	    this.loadingText = game.add.sprite(120,120,'loading-text-v2');
 	    this.loadingText.anchor.setTo(0.5,0.5);
-	   	this.loadingText.x = 1200/2;
-	   	this.loadingText.y = 500;
+	   	this.loadingText.x = game.width/2;
+	   	this.loadingText.y = game.height - 100;
 	   	this.loadingText.smoothed = false;
 	   	this.loadingText.animations.add('run');
 	    this.loadingText.animations.play('run',3, true);
@@ -31,15 +29,12 @@ Preload.prototype = {
 	    this.dtext.alpha = 0.1;
 
 	    //capture the spacebar to prevent the browser from stealing focus 
-
 	    this.nullButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 		
-		//	This sets the preloadBar sprite as as loader sprite.
-		//	What that does is automatically crop the sprite from 0 to full-width
-		//	as the files below are loaded in.
-		//this.load.setPreloadSprite(this.preloadBar);
-
-		// Cutscene assets
+		// LOAD ALL GAME ASSETS
+		// ---------------------------------------------------------------------
+		
+		//Cutscene assets
 
 		this.game.load.spritesheet('cutscene-frame',  path + 'screens/cutscene-frame.png', 1104, 434, 2);
 		this.game.load.image('cutscene-powerups',  path + 'screens/cutscene-powerups.png');
@@ -250,7 +245,6 @@ Preload.prototype = {
 		game.load.audio('vo-nomnom',  path + 'audio/vo-nomnom.mp3');
 		game.load.audio('vo-seeya',  path + 'audio/vo-seeya.mp3');
 		game.load.audio('vo-ouch',  path + 'audio/vo-ouch.mp3');
-
 
 		// Fonts
 
