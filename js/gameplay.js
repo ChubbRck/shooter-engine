@@ -82,8 +82,9 @@ Gameplay.prototype = {
     sg.game.camera.x = sg.warpPoint; 
 
 
-    // Create the player. In the future, make the player a class to allow for multiple players.
-    sg.player = game.add.sprite(500, 200, 'blake-sprite-v3');
+    // Create the player.
+    sg.player = new Player(game, 500, 200, sg.bullets, sg.difficulty);
+    game.add.existing(sg.player)
     sg.player.x = sg.warpPoint + 500;
     sg.player.frame = 0;
     sg.player.animations.add('walk');
@@ -735,7 +736,8 @@ Gameplay.prototype = {
         sg.player.y = 0
       }
 
-      sg.checkInput();
+      // The individual player is handling this now.
+      //sg.checkInput();
 
       // Check for collisions
       
@@ -816,25 +818,25 @@ Gameplay.prototype = {
     }
 
 
-//    sg.manageHealthBar();
-sg.manageBonus();
-    sg.manageFrames();
-     sg.emitter.x = sg.player.x - sg.player.width/2 + 10;
+
+    sg.manageBonus();
+    
+    // Consider moving this to the player class
+    sg.emitter.x = sg.player.x - sg.player.width/2 + 10;
     sg.emitter.y = sg.player.y - sg.player.height/2 + 10;
     sg.emitter.forEachAlive(function(p){
       p.alpha= p.lifespan / sg.emitter.lifespan;
     });
-  //  
-//   
-// 
+
+
   if (game.camera.x > sg.bossPoint && !sg.bossMusicTriggered){
     
     sg.bossMusicTriggered = true;
     sg.fadeOutMusic(sg.trackPlaying);
   
-   // sg.bosstrack.fadeIn(1000)
-   sg.bosstrack.play();
+    sg.bosstrack.play();
     sg.bosstrack.loop = true;
+
   }
     if (game.levelBeaten){
       // sg.gameOver();
