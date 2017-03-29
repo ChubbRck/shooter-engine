@@ -18,7 +18,7 @@ GameTitle.prototype = {
 		game.buddyCounter = Math.floor((Math.random() * 4));
 		 // game.buddyCounter = 2;
 		game.weaponType = 1;
-		game.sound.mute = false;
+		game.sound.mute = true;
 		game.playerSpeed = 0;
 		game.introSlide = 1;
 		game.scoreMultiplier = 1.0;
@@ -58,19 +58,19 @@ GameTitle.prototype = {
 
 	this.menuShown = false;
 	this.choiceMade = false;
-	// this.titleBackground = game.add.sprite(0, 0, 'spacebg');
-	this.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'title-bg-back');
-    this.bgtile.fixedToCamera = true;
-    this.bgtile.autoScroll(-300,0); // on level 1 it is -20, 0
+	// // this.titleBackground = game.add.sprite(0, 0, 'spacebg');
+	// this.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'title-bg-back');
+ //    this.bgtile.fixedToCamera = true;
+ //    this.bgtile.autoScroll(-300,0); // on level 1 it is -20, 0
 
-    this.middle = game.add.tileSprite(0, 600-471, 1200, 471, 'title-bg-middle');
-    this.middle.fixedToCamera = true;
-    this.middle.autoScroll(-400,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-    // this.mountain.anchor.setTo(0.5,1.0);
+ //    this.middle = game.add.tileSprite(0, 600-471, 1200, 471, 'title-bg-middle');
+ //    this.middle.fixedToCamera = true;
+ //    this.middle.autoScroll(-400,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+ //    // this.mountain.anchor.setTo(0.5,1.0);
 
-    this.front = game.add.tileSprite(0, 600-140, 1200, 140, 'title-bg-front');
-    this.front.fixedToCamera = true;
-    this.front.autoScroll(-500,0);
+ //    this.front = game.add.tileSprite(0, 600-140, 1200, 140, 'title-bg-front');
+ //    this.front.fixedToCamera = true;
+ //    this.front.autoScroll(-500,0);
 
 
    	this.logo = game.add.sprite(1800,215, 'titlescreen-title');
