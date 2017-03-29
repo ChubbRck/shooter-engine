@@ -23,6 +23,7 @@ GameTitle.prototype = {
 		game.introSlide = 1;
 		game.scoreMultiplier = 1.0;
 		game.lives = 3;
+		game.activePlayers = [];
 		game.topScores;
 		game.levels = [level1_data, level2_data, level3_data]
 		game.bonuses = [

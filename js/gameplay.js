@@ -49,6 +49,7 @@ Gameplay.prototype = {
     sg.walls = game.add.group();
     sg.buddies = game.add.group();
     sg.explosions = game.add.group();
+    sg.players = game.add.group();
     
     if (game.level == 3){
       sg.finalBoss.playerRef = sg.player;
@@ -62,15 +63,7 @@ Gameplay.prototype = {
     sg.fruits = ['cherry', 'grapefruit', 'orange', 'watermelon'];
     sg.vegetables = ['broccoli', 'cabbage', 'carrot', 'pumpkin'];
 
-    sg.emitter = game.add.emitter(2000, 300, 500);
-    //  Here we're passing an array of image keys. It will pick one at random when emitting a new particle.
-    sg.emitter.makeParticles(['bubble-sm', 'bubble-md', 'bubble-lg']);
-    sg.emitter.gravity = -200;
-    // sg.emitter.maxParticleSpeed.set(1, 300);
-    sg.emitter.setAlpha(1.0, 0);
-    sg.emitter.start(false, 1000, 400);
-    sg.emitter.setXSpeed(-20, 20);
-    sg.emitter.setYSpeed(-20, 20);
+
     sg.paceStopped = false;
     
 
@@ -82,10 +75,17 @@ Gameplay.prototype = {
     sg.game.camera.x = sg.warpPoint; 
 
 
-    // Create the player.
+    // Create the player(s). This should be a create player function eventually.
     sg.player = new Player(game, 500, 200, sg.bullets, game.difficulty);
+    sg.playerTwo = new Player(game, 600, 100, sg.bullets, game.difficulty);
     game.add.existing(sg.player)
+    game.add.existing(sg.playerTwo)
     sg.player.x = sg.warpPoint + 500;
+    sg.playerTwo.x = sg.warpPoint + 600;
+    game.activePlayers.push(sg.player);
+    game.activePlayers.push(sg.playerTwo);
+    sg.players.add(sg.player);
+    sg.players.add(sg.playerTwo);
 
 
     if (game.level == 3){
@@ -142,7 +142,7 @@ Gameplay.prototype = {
 
     // Re-order some display list items
     game.world.bringToTop(sg.buddies);
-    sg.player.bringToTop();
+    game.world.bringToTop(sg.players);
     game.world.bringToTop(sg.explosions);
 
     // determine when boss music should play
@@ -686,27 +686,9 @@ Gameplay.prototype = {
       if (this.game.time.time > sg.player.invincibleTime + 1000) { sg.player.invincible = false; }
 
       // Keep player on-screen
-      if (sg.player.x < game.camera.x){
-          sg.player.x = game.camera.x;
+      // iterate though all active players -- or should this be moved to individual player class?
 
-        // if overlapping with a wall... lose a life
-     
-       
-         // 
-          
-        
-      }
 
-      if (sg.player.x > game.camera.x + game.width){
-        sg.player.x = game.camera.x + game.width
-      }
-
-      if (sg.player.y > 600){
-        sg.player.y = 600
-      }
-      if (sg.player.y < 0){
-        sg.player.y = 0
-      }
 
       // The individual player is handling this now.
       //sg.checkInput();
@@ -715,12 +697,17 @@ Gameplay.prototype = {
       
       //check for collisions between bullets and enemies
       game.physics.arcade.overlap(sg.bullets, sg.enemies, sg.collisionHandler, null, this);
-      if (sg.player.visible){
-        game.physics.arcade.overlap(sg.player, sg.powerups, sg.powerupHandler, null, this);
-        game.physics.arcade.overlap(sg.player, sg.walls, sg.overlapCallback, null, this);
-        game.physics.arcade.overlap(sg.player, sg.badbullets, sg.badBulletCollisionHandler, null, this);
-        game.physics.arcade.collide(sg.player, sg.enemies, sg.playerCollisionHandler, null, this);
-        game.physics.arcade.collide(sg.player, sg.walls, sg.wallCollisionHandler, null, this);
+      for (i=0; i<game.activePlayers.length; i++){
+        var currentPlayer = game.activePlayers[i];
+        if (currentPlayer.visible){
+
+          game.physics.arcade.overlap(currentPlayer, sg.powerups, sg.powerupHandler, null, this);
+          game.physics.arcade.overlap(currentPlayer, sg.walls, sg.overlapCallback, null, this);
+          game.physics.arcade.overlap(currentPlayer, sg.badbullets, sg.badBulletCollisionHandler, null, this);
+          game.physics.arcade.collide(currentPlayer, sg.enemies, sg.playerCollisionHandler, null, this);
+          game.physics.arcade.collide(currentPlayer, sg.walls, sg.wallCollisionHandler, null, this);
+        }
+      
       }
       game.physics.arcade.overlap(sg.bullets, sg.bosses, sg.bossBulletCollisionHandler, null, this);
       
@@ -793,12 +780,7 @@ Gameplay.prototype = {
 
     sg.manageBonus();
     
-    // Consider moving this to the player class
-    sg.emitter.x = sg.player.x - sg.player.width/2 + 10;
-    sg.emitter.y = sg.player.y - sg.player.height/2 + 10;
-    sg.emitter.forEachAlive(function(p){
-      p.alpha= p.lifespan / sg.emitter.lifespan;
-    });
+  
 
 
   if (game.camera.x > sg.bossPoint && !sg.bossMusicTriggered){
@@ -1025,116 +1007,7 @@ Gameplay.prototype = {
       
     
   },
-    
-  fireBullet: function(isHeld){
 
-    var sg = this;
-    
-   // if (this.game.time.time - sg.player.lastFire  > sg.fireRate){
-     // blaster.play(); // move this to individual weapons
-      //sg.player.triple.fire(sg.player);
-    //  sg.player.beam.fire(sg.player);
-      //Do different things based on weapon type  
-      if (game.weaponType == 1){ // Basic Vitamin A gun 
-      
-        
-           sg.player.basicShot.fire(sg.player, isHeld);
-          // sg.player.missile.fire(sg.player);
-      
-      }
-
-       if (game.weaponType == 2){
-        sg.player.triple.fire(sg.player, isHeld);
-         sg.player.twin.fire(sg.player, isHeld);
-        
-
-           
-      }
-        if (game.weaponType == 3){
-        sg.player.triple.fire(sg.player, isHeld);
-         sg.player.twin.fire(sg.player, isHeld);
-        sg.player.missile.fire(sg.player, isHeld);        
-
-           
-      }
-
-      if (game.weaponType ==4){
-        sg.player.beam.fire(sg.player, isHeld);
-          sg.player.missile.fire(sg.player, isHeld);
-          sg.player.triple.fire(sg.player, isHeld);
-      }
-
-      if (game.weaponType >= 5){
-            sg.player.ring.fire(sg.player, isHeld);
-              sg.player.missile.fire(sg.player, isHeld);
-          sg.player.triple.fire(sg.player, isHeld);
-      }
-
-
-
-      //   var bullet = new Bullet(game, 200, 300);
-      //   bullet.x = sg.player.x;
-      //   bullet.y = sg.player.y;
-      //   game.add.existing(bullet);
-      //   sg.bullets.add(bullet);
-      //   sg.player.lastFire = this.game.time.time;
-      // } else if (game.weaponType == 2){
-      
-      //   var bullet = new Bullet(game, 200, 300, 0);
-      //   bullet.x = sg.player.x;
-      //   bullet.y = sg.player.y;
-      //   game.add.existing(bullet);
-      //   sg.bullets.add(bullet);
-           
-      //   var bulletDown = new Bullet(game, 200, 300, 1);
-      //   bulletDown.x = sg.player.x;
-      //   bulletDown.y = sg.player.y;
-      //   game.add.existing(bulletDown);
-      //   sg.bullets.add(bulletDown);
-
-      //   var bulletUp = new Bullet(game, 200, 300, -1);
-      //   bulletUp.x = sg.player.x;
-      //   bulletUp.y = sg.player.y;
-      //   game.add.existing(bulletUp);
-      //   sg.bullets.add(bulletUp);
-      //   sg.player.lastFire = this.game.time.time;
-      // } else if (game.weaponType == 3){
-      //   sg.fireRate = 50;
-      //   var bullet = new Bullet(game, 200, 300, 1, 'plbullet-purple');
-      //   bullet.x = sg.player.x;
-      //   bullet.y = sg.player.y;
-      //   game.add.existing(bullet);
-      //   sg.bullets.add(bullet);
-
-      //   var bulletd = new Bullet(game, 200, 300, 0, 'plbullet-purple');
-      //   bulletd.x = sg.player.x;
-      //   bulletd.y = sg.player.y;
-      //   game.add.existing(bulletd);
-      //   sg.bullets.add(bulletd);
-
-      //   var bulletu = new Bullet(game, 200, 300, -1, 'plbullet-purple');
-      //   bulletu.x = sg.player.x;
-      //   bulletu.y = sg.player.y;
-      //   game.add.existing(bulletu);
-      //   sg.bullets.add(bulletu);
-      //   sg.player.lastFire = this.game.time.time;
-      // } else if (game.weaponType >= 4){
-      //   sg.fireRate = 10;
-      //   var bulletd = new Bullet(game, 200, 300, 2, 'plbullet-green');
-      //   bulletd.x = sg.player.x;
-      //   bulletd.y = sg.player.y;
-      //   game.add.existing(bulletd);
-      //   sg.bullets.add(bulletd);
-      // } else{
-      //   var bullet = new Bullet(game, 200, 300, 1);
-      //   bullet.x = sg.player.x;
-      //   bullet.y = sg.player.y;
-      //   game.add.existing(bullet);
-      //   sg.bullets.add(bullet);
-      //   sg.player.lastFire = this.game.time.time;
-      // }
-    //}
-  },
 
   bulletWallCollider: function (bullet, wall) {
     var sg = this;

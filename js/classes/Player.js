@@ -47,6 +47,16 @@ var Player = function (game, x, y, bulletsRef, playerID, controllerID) {
     this.body.bounce.x = 0.6;
 
 
+    this.emitter = game.add.emitter(2000, 300, 500);
+    //  Here we're passing an array of image keys. It will pick one at random when emitting a new particle.
+    this.emitter.makeParticles(['bubble-sm', 'bubble-md', 'bubble-lg']);
+    this.emitter.gravity = -200;
+    // this.emitter.maxParticleSpeed.set(1, 300);
+    this.emitter.setAlpha(1.0, 0);
+    this.emitter.start(false, 1000, 400);
+    this.emitter.setXSpeed(-20, 20);
+    this.emitter.setYSpeed(-20, 20);
+
     //create fire button
     // this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.T);
     // this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
@@ -69,7 +79,8 @@ Player.prototype.update = function() {
 
     this.checkInput();
     this.manageFrames();
-
+    this.updateEmitter();
+    this.enforceBounds();
     // TODO:
     //ManageBonus();
     
@@ -152,6 +163,25 @@ Player.prototype.manageFrames = function(){
     }
 
 }
+
+Player.prototype.enforceBounds = function(){
+  if (this.x < game.camera.x){
+    this.x = game.camera.x;
+  }
+
+  if (this.x > game.camera.x + game.width){
+    this.x = game.camera.x + game.width
+  }
+
+  if (this.y > game.height){
+    this.y = game.height
+  }
+    
+  if (this.y < 0){
+    this.y = 0
+  }
+}
+
 Player.prototype.assignControls = function(whichPlayer){
 
     // Assign the appropriate keys to this player;
@@ -181,8 +211,13 @@ Player.prototype.assignControls = function(whichPlayer){
     }
 }
 
-Player.prototype.moveLeft = function(){
-console.log("left!")
+Player.prototype.updateEmitter = function(){
+    this.emitter.x = this.x - this.width/2 + 10;
+    this.emitter.y = this.y - this.height/2 + 10;
+    this.emitter.forEachAlive(function(p){
+      
+      p.alpha= p.lifespan / 2000;
+    });
 }
 
 Player.prototype.fireBullet = function(isHeld){
