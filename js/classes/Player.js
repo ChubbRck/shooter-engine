@@ -17,6 +17,7 @@ var Player = function (game, x, y, bulletsRef, playerID, controllerID) {
     this.anchor.setTo(0.5,0.5);
     this.lycocoins = 0;
     this.lastFire = 0;
+    this.weaponType = 1;
     //this.accel = [600, 800, 1000, 1100]
     //this.maxVel = [300, 400, 500, 550]
     //this.drag = [5000, 7000, 9000, 12000]
@@ -92,7 +93,6 @@ Player.prototype.update = function() {
 
 Player.prototype.checkInput = function(){
  
-
     if (this.canMove){
       this.body.acceleration.x = 0;
       this.body.acceleration.y = 0;
@@ -119,35 +119,6 @@ Player.prototype.checkInput = function(){
         this.fireBullet(true);
       }
     }
-
-    // if (this.canMove){
-     
-
-    //   if (this.upKey.isDown){
-    //     this.body.velocity.y = -1 * 800;
-    //   } else if (this.downKey.isDown) {
-    //     this.body.velocity.y = 1 * 300;
-    //   }   
-
-    //   if (this.leftKey.isDown){
-    //     this.body.velocity.x = -1 * 800;
-    //   } else if (this.rightKey.isDown) {
-    //     this.body.velocity.x = 1 * 800;
-    //   } else {
-    //     if (this.body.velocity.x <65*game.difficulty && this.body.velocity.x >= 0 && !game.paceStopped){
-    //       this.body.velocity.x += 20;
-         
-    //     }
-    //      // this.body.x += 1
-    //   }
-
-    //   if(this.fireButton.isDown){
-    //     this.fireBullet(true);
-    //   }
-    // }
-
-  
-
 }
 
 Player.prototype.manageFrames = function(){
@@ -184,79 +155,69 @@ Player.prototype.enforceBounds = function(){
 
 Player.prototype.assignControls = function(whichPlayer){
 
-    // Assign the appropriate keys to this player;
-    switch (whichPlayer){
-        case 1:
-            this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
-            // this.leftKey.onDown.add(this.moveLeft, this);
+  // Assign the appropriate keys to this player;
+  switch (whichPlayer){
+    case 1:
+      this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
+      // this.leftKey.onDown.add(this.moveLeft, this);
+      
+      this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
+      // this.rightKey.onDown.add(this.moveRight, this);
 
-            this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.D);
-            // this.rightKey.onDown.add(this.moveRight, this);
+      this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
+      // this.upKey.onDown.add(this.moveUp, this);
 
-            this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
-            // this.upKey.onDown.add(this.moveUp, this);
+      this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
+      // this.downKey.onDown.add(this.moveDown, this);
 
-            this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
-            // this.downKey.onDown.add(this.moveDown, this);
-
-            this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.T);
-            // this.fireButton.onDown.add(function(){this.fireBullet(false)}, this);
-        break;
-        case 2:
-        break;
-        case 3:
-        break;
-        case 4:
-        break;
-    }
+      this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.T);
+      // this.fireButton.onDown.add(function(){this.fireBullet(false)}, this);
+      break;
+      case 2:
+      break;
+      case 3:
+      break;
+      case 4:
+      break;
+  }
 }
 
 Player.prototype.updateEmitter = function(){
     this.emitter.x = this.x - this.width/2 + 10;
     this.emitter.y = this.y - this.height/2 + 10;
-    this.emitter.forEachAlive(function(p){
-      
+    
+    this.emitter.forEachAlive(function(p){  
       p.alpha= p.lifespan / 2000;
     });
 }
 
 Player.prototype.fireBullet = function(isHeld){
 
-      // these need to be changed to player variables!!!
-      if (game.weaponType == 1){ // Basic Vitamin A gun 
-      
-        
-           this.basicShot.fire(this, isHeld);
-          // this.missile.fire(this);
-      
+      // TODO: this.weaponType needs to get values from the game to persist data between levels
+      if (this.weaponType == 1){ // Basic Vitamin A gun 
+        this.basicShot.fire(this, isHeld);
       }
 
-       if (game.weaponType == 2){
+      if (this.weaponType == 2){
         this.triple.fire(this, isHeld);
-         this.twin.fire(this, isHeld);
-        
-
-           
+        this.twin.fire(this, isHeld);   
       }
-        if (game.weaponType == 3){
+
+      if (this.weaponType == 3){
         this.triple.fire(this, isHeld);
-         this.twin.fire(this, isHeld);
-        this.missile.fire(this, isHeld);        
-
-           
+        this.twin.fire(this, isHeld);
+        this.missile.fire(this, isHeld);           
       }
 
-      if (game.weaponType ==4){
+      if (this.weaponType ==4){
         this.beam.fire(this, isHeld);
-          this.missile.fire(this, isHeld);
-          this.triple.fire(this, isHeld);
+        this.missile.fire(this, isHeld);
+        this.triple.fire(this, isHeld);
       }
 
-      if (game.weaponType >= 5){
-            this.ring.fire(this, isHeld);
-              this.missile.fire(this, isHeld);
-          this.triple.fire(this, isHeld);
+      if (this.weaponType >= 5){
+        this.ring.fire(this, isHeld);
+        this.missile.fire(this, isHeld);
+        this.triple.fire(this, isHeld);
       }
-
-
   }

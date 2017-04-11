@@ -1147,6 +1147,15 @@ Gameplay.prototype = {
     
   },
 
+  savePlayerData: function(){
+
+
+  },
+
+  loadPlayerData: function(){
+
+  },
+  
   loseLife: function(){
     var sg = this;
     //remove a life
