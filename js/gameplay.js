@@ -16,12 +16,12 @@ Gameplay.prototype = {
     // Get url query string for 'h' variable and fade-in applicable elements.
     var difficultyModifier = sg.getUrlVars()["d"];
     sg.levels = [level1_data, level2_data, level3_data];
-    sg.difficulty = sg.levels[game.level - 1]["pace"];
-    if (difficultyModifier == 2){ sg.difficulty = 2; }
+    game.difficulty = sg.levels[game.level - 1]["pace"];
+    if (difficultyModifier == 2){ game.difficulty = 2; }
     
     // Enable Physics
     sg.game.physics.startSystem(Phaser.Physics.ARCADE);
-
+    sg.game.physics.arcade.enable(game.camera);
     // Create a long world that will allow the camera to scroll to the right.
     game.world.resize(58000, 600);
 
@@ -49,6 +49,7 @@ Gameplay.prototype = {
     sg.walls = game.add.group();
     sg.buddies = game.add.group();
     sg.explosions = game.add.group();
+    sg.players = game.add.group();
     
     if (game.level == 3){
       sg.finalBoss.playerRef = sg.player;
@@ -62,15 +63,7 @@ Gameplay.prototype = {
     sg.fruits = ['cherry', 'grapefruit', 'orange', 'watermelon'];
     sg.vegetables = ['broccoli', 'cabbage', 'carrot', 'pumpkin'];
 
-    sg.emitter = game.add.emitter(2000, 300, 500);
-    //  Here we're passing an array of image keys. It will pick one at random when emitting a new particle.
-    sg.emitter.makeParticles(['bubble-sm', 'bubble-md', 'bubble-lg']);
-    sg.emitter.gravity = -200;
-    // sg.emitter.maxParticleSpeed.set(1, 300);
-    sg.emitter.setAlpha(1.0, 0);
-    sg.emitter.start(false, 1000, 400);
-    sg.emitter.setXSpeed(-20, 20);
-    sg.emitter.setYSpeed(-20, 20);
+
     sg.paceStopped = false;
     
 
@@ -82,38 +75,18 @@ Gameplay.prototype = {
     sg.game.camera.x = sg.warpPoint; 
 
 
-    // Create the player. In the future, make the player a class to allow for multiple players.
-    sg.player = game.add.sprite(500, 200, 'blake-sprite-v3');
+    // Create the player(s). This should be a create player function eventually.
+    sg.player = new Player(game, 500, 200, sg.bullets, game.difficulty);
+    sg.playerTwo = new Player(game, 600, 100, sg.bullets, game.difficulty);
+    game.add.existing(sg.player)
+    game.add.existing(sg.playerTwo)
     sg.player.x = sg.warpPoint + 500;
-    sg.player.frame = 0;
-    sg.player.animations.add('walk');
-    // Create player weapons
-    sg.player.basicShot = new BasicShot(game, sg.bullets);
-    sg.player.beam = new Beam(game, sg.bullets);
-    sg.player.triple = new Triple(game, sg.bullets);
-    sg.player.twin = new Twin(game, sg.bullets);
-    sg.player.missile = new Missile(game, sg.bullets);
-    sg.player.ring = new Ring(game, sg.bullets);
-    sg.player.anchor.setTo(0.5,0.5);
-    sg.player.lycocoins = 0;
-    sg.player.lastFire = 0;
-    sg.player.accel = [600, 800, 1000, 1100]
-    sg.player.maxVel = [300, 400, 500, 550]
-    sg.player.drag = [500, 700, 900, 1200]
-    sg.player.health = 5;
-    sg.player.canMove = true;
-    sg.player.godMode = false;
-    sg.player.invincible = false;
-    sg.player.invincibleTime = 0;
-    // Set player's physics properties.
-    sg.game.physics.arcade.enable(sg.player);
-    sg.player.body.setSize(60, 60, 0, -15)
-    sg.player.body.maxVelocity.x= sg.player.maxVel[game.playerSpeed];
-    sg.player.body.maxVelocity.y= sg.player.maxVel[game.playerSpeed];
-    sg.player.body.drag.x = sg.player.drag[game.playerSpeed];
-    sg.player.body.drag.y = sg.player.drag[game.playerSpeed];
-    sg.player.body.collideWorldBounds = true;   
-    sg.player.body.bounce.y = 0.6;
+    sg.playerTwo.x = sg.warpPoint + 600;
+    game.activePlayers.push(sg.player);
+    game.activePlayers.push(sg.playerTwo);
+    sg.players.add(sg.player);
+    sg.players.add(sg.playerTwo);
+
 
     if (game.level == 3){
       sg.finalBoss.playerRef = sg.player;
@@ -125,8 +98,8 @@ Gameplay.prototype = {
     var pauseKey = game.input.keyboard.addKey(Phaser.Keyboard.P); 
     var muteKey = game.input.keyboard.addKey(Phaser.Keyboard.M); 
     // Create fire button
-    sg.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    sg.fireButton.onDown.add(function(){sg.fireBullet(false)}, sg);
+    // sg.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    // sg.fireButton.onDown.add(function(){sg.fireBullet(false)}, sg);
     
 
     // Add music and SFX
@@ -169,7 +142,7 @@ Gameplay.prototype = {
 
     // Re-order some display list items
     game.world.bringToTop(sg.buddies);
-    sg.player.bringToTop();
+    game.world.bringToTop(sg.players);
     game.world.bringToTop(sg.explosions);
 
     // determine when boss music should play
@@ -343,7 +316,7 @@ Gameplay.prototype = {
       return vars;
     },
   toggleMute: function(){ 
-    ga('send', 'event', 'betablasters', 'hitMuteButton');
+    // ga('send', 'event', 'betablasters', 'hitMuteButton');
     game.sound.mute = !game.sound.mute; 
     if (game.sound.mute){
       this.soundToggle.frame = 2;
@@ -422,19 +395,19 @@ Gameplay.prototype = {
     game.level += 1;
 
     if (game.level == 2){
-      ga('send', 'event', 'betablasters', 'finished', 'levelone');
+      // ga('send', 'event', 'betablasters', 'finished', 'levelone');
     }
     if (game.level == 3){
-      ga('send', 'event', 'betablasters', 'finished', 'leveltwo');
+      // ga('send', 'event', 'betablasters', 'finished', 'leveltwo');
     }
 
     if (game.level == 4){
       var timeEnded = Math.floor(game.time.time / 60000); // time Ended, in seconds
       var timePlayed = timeEnded - game.timeStarted;
-      ga('send', 'event', 'betablasters', 'finished', 'timePlayed', timePlayed);
-      ga('send', 'event', 'betablasters', 'finished', 'levelthree');
+      // ga('send', 'event', 'betablasters', 'finished', 'timePlayed', timePlayed);
+      // ga('send', 'event', 'betablasters', 'finished', 'levelthree');
       game.score += (game.lives*5000);
-      ga('send', 'event', 'betablasters', 'finished', 'score', game.score);
+      // ga('send', 'event', 'betablasters', 'finished', 'score', game.score);
       //check if player is in the top 10 scores.
       var inTopTen = false;
       for (i=0; i<game.topScores.length; i++){
@@ -445,7 +418,7 @@ Gameplay.prototype = {
         }  
       }
       if (inTopTen){
-        ga('send', 'event', 'betablasters', 'earnedTopScore')
+        // ga('send', 'event', 'betablasters', 'earnedTopScore')
         this.game.state.start('TopTenScore');
       } else {
         this.game.state.start('ScoreSummary'); 
@@ -691,9 +664,9 @@ Gameplay.prototype = {
     //Only move objects if game is not paused.
     if (!sg.paused){
       // Move the camera
-      if (sg.difficulty == 1 && !sg.paceStopped){
+      if (game.difficulty == 1 && !sg.paceStopped){
         game.camera.x += 1;
-      } else if (sg.difficulty == 2 && !sg.paceStopped){
+      } else if (game.difficulty == 2 && !sg.paceStopped){
        game.camera.x += 2;
       } else {
         game.camera.x += 0;
@@ -713,40 +686,28 @@ Gameplay.prototype = {
       if (this.game.time.time > sg.player.invincibleTime + 1000) { sg.player.invincible = false; }
 
       // Keep player on-screen
-      if (sg.player.x < game.camera.x){
-          sg.player.x = game.camera.x;
+      // iterate though all active players -- or should this be moved to individual player class?
 
-        // if overlapping with a wall... lose a life
-     
-       
-         // 
-          
-        
-      }
 
-      if (sg.player.x > game.camera.x + game.width){
-        sg.player.x = game.camera.x + game.width
-      }
 
-      if (sg.player.y > 600){
-        sg.player.y = 600
-      }
-      if (sg.player.y < 0){
-        sg.player.y = 0
-      }
-
-      sg.checkInput();
+      // The individual player is handling this now.
+      //sg.checkInput();
 
       // Check for collisions
       
       //check for collisions between bullets and enemies
       game.physics.arcade.overlap(sg.bullets, sg.enemies, sg.collisionHandler, null, this);
-      if (sg.player.visible){
-        game.physics.arcade.overlap(sg.player, sg.powerups, sg.powerupHandler, null, this);
-        game.physics.arcade.overlap(sg.player, sg.walls, sg.overlapCallback, null, this);
-        game.physics.arcade.overlap(sg.player, sg.badbullets, sg.badBulletCollisionHandler, null, this);
-        game.physics.arcade.collide(sg.player, sg.enemies, sg.playerCollisionHandler, null, this);
-        game.physics.arcade.collide(sg.player, sg.walls, sg.wallCollisionHandler, null, this);
+      for (i=0; i<game.activePlayers.length; i++){
+        var currentPlayer = game.activePlayers[i];
+        if (currentPlayer.visible){
+
+          game.physics.arcade.overlap(currentPlayer, sg.powerups, sg.powerupHandler, null, this);
+          game.physics.arcade.overlap(currentPlayer, sg.walls, sg.overlapCallback, null, this);
+          game.physics.arcade.overlap(currentPlayer, sg.badbullets, sg.badBulletCollisionHandler, null, this);
+          game.physics.arcade.collide(currentPlayer, sg.enemies, sg.playerCollisionHandler, null, this);
+          game.physics.arcade.collide(currentPlayer, sg.walls, sg.wallCollisionHandler, null, this);
+        }
+      
       }
       game.physics.arcade.overlap(sg.bullets, sg.bosses, sg.bossBulletCollisionHandler, null, this);
       
@@ -816,25 +777,20 @@ Gameplay.prototype = {
     }
 
 
-//    sg.manageHealthBar();
-sg.manageBonus();
-    sg.manageFrames();
-     sg.emitter.x = sg.player.x - sg.player.width/2 + 10;
-    sg.emitter.y = sg.player.y - sg.player.height/2 + 10;
-    sg.emitter.forEachAlive(function(p){
-      p.alpha= p.lifespan / sg.emitter.lifespan;
-    });
-  //  
-//   
-// 
+
+    sg.manageBonus();
+    
+  
+
+
   if (game.camera.x > sg.bossPoint && !sg.bossMusicTriggered){
     
     sg.bossMusicTriggered = true;
     sg.fadeOutMusic(sg.trackPlaying);
   
-   // sg.bosstrack.fadeIn(1000)
-   sg.bosstrack.play();
+    sg.bosstrack.play();
     sg.bosstrack.loop = true;
+
   }
     if (game.levelBeaten){
       // sg.gameOver();
@@ -971,196 +927,87 @@ sg.manageBonus();
   createBackground: function(){ //Need to tie this to level data later
     var sg = this;
     //Create the background
-   switch(game.level){
-    case 1:
+   // switch(game.level){
+   //  case 1:
 
-    sg.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'l1_back');
-    sg.bgtile.fixedToCamera = true;
-    sg.bgtile.autoScroll(-30,0); // on level 1 it is -20, 0
+   //  sg.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'l1_back');
+   //  sg.bgtile.fixedToCamera = true;
+   //  sg.bgtile.autoScroll(-30,0); // on level 1 it is -20, 0
 
-    sg.mountain = game.add.tileSprite(0, 0, 1200, 600, 'l1_middle');
-    sg.mountain.fixedToCamera = true;
-    sg.mountain.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-    // sg.mountain.anchor.setTo(0.5,1.0);
+   //  sg.mountain = game.add.tileSprite(0, 0, 1200, 600, 'l1_middle');
+   //  sg.mountain.fixedToCamera = true;
+   //  sg.mountain.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+   //  // sg.mountain.anchor.setTo(0.5,1.0);
 
-    sg.front = game.add.tileSprite(0, 0, 1200, 600, 'l1_front');
-    sg.front.fixedToCamera = true;
-    sg.front.autoScroll(-105,0);
-    break;
-    case 2:
-     sg.bgtile = game.add.tileSprite(0, 136 , 1200, 374, 'l2_back');
-    sg.bgtile.fixedToCamera = true;
-    sg.bgtile.autoScroll(-30,0); // on level 1 it is -20, 0
+   //  sg.front = game.add.tileSprite(0, 0, 1200, 600, 'l1_front');
+   //  sg.front.fixedToCamera = true;
+   //  sg.front.autoScroll(-105,0);
+   //  break;
+   //  case 2:
+   //   sg.bgtile = game.add.tileSprite(0, 136 , 1200, 374, 'l2_back');
+   //  sg.bgtile.fixedToCamera = true;
+   //  sg.bgtile.autoScroll(-30,0); // on level 1 it is -20, 0
 
-    sg.middle_top = game.add.tileSprite(0, 0, 1200, 192, 'l2_middle_top');
-    sg.middle_top.fixedToCamera = true;
-    sg.middle_top.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+   //  sg.middle_top = game.add.tileSprite(0, 0, 1200, 192, 'l2_middle_top');
+   //  sg.middle_top.fixedToCamera = true;
+   //  sg.middle_top.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
 
-    sg.middle_bottom = game.add.tileSprite(0, 600-146, 1200, 146, 'l2_middle_bottom');
-    sg.middle_bottom.fixedToCamera = true;
-    sg.middle_bottom.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-    // sg.mountain.anchor.setTo(0.5,1.0);
+   //  sg.middle_bottom = game.add.tileSprite(0, 600-146, 1200, 146, 'l2_middle_bottom');
+   //  sg.middle_bottom.fixedToCamera = true;
+   //  sg.middle_bottom.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+   //  // sg.mountain.anchor.setTo(0.5,1.0);
 
-    sg.front_top = game.add.tileSprite(0, 0, 1200, 166, 'l2_front_top');
-    sg.front_top.fixedToCamera = true;
-    sg.front_top.autoScroll(-105,0);
+   //  sg.front_top = game.add.tileSprite(0, 0, 1200, 166, 'l2_front_top');
+   //  sg.front_top.fixedToCamera = true;
+   //  sg.front_top.autoScroll(-105,0);
 
-    sg.front_bottom = game.add.tileSprite(0, 600-120, 1200, 120, 'l2_front_bottom');
-    sg.front_bottom.fixedToCamera = true;
-    sg.front_bottom.autoScroll(-105,0);
-    break;
+   //  sg.front_bottom = game.add.tileSprite(0, 600-120, 1200, 120, 'l2_front_bottom');
+   //  sg.front_bottom.fixedToCamera = true;
+   //  sg.front_bottom.autoScroll(-105,0);
+   //  break;
 
-    case 3:
-    //  sg.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'l3_back');
-    // sg.bgtile.fixedToCamera = true;
-    // sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
+   //  case 3:
+   //  //  sg.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'l3_back');
+   //  // sg.bgtile.fixedToCamera = true;
+   //  // sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
 
-    // sg.mountain = game.add.tileSprite(0, 0, 1200, 600, 'l3_middle');
-    // sg.mountain.fixedToCamera = true;
-    // sg.mountain.autoScroll(-75,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-    // // sg.mountain.anchor.setTo(0.5,1.0);
+   //  // sg.mountain = game.add.tileSprite(0, 0, 1200, 600, 'l3_middle');
+   //  // sg.mountain.fixedToCamera = true;
+   //  // sg.mountain.autoScroll(-75,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+   //  // // sg.mountain.anchor.setTo(0.5,1.0);
 
-    //  sg.front = game.add.tileSprite(0, 0, 1200, 600, 'l3_front');
-    // sg.front.fixedToCamera = true;
-    // sg.front.autoScroll(-115,0);
+   //  //  sg.front = game.add.tileSprite(0, 0, 1200, 600, 'l3_front');
+   //  // sg.front.fixedToCamera = true;
+   //  // sg.front.autoScroll(-115,0);
 
-    sg.bgtile = game.add.tileSprite(0, 154, 1200, 292, 'l3_back_s2');
-    sg.bgtile.fixedToCamera = true;
-    sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
+   //  sg.bgtile = game.add.tileSprite(0, 154, 1200, 292, 'l3_back_s2');
+   //  sg.bgtile.fixedToCamera = true;
+   //  sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
 
-    sg.mountain = game.add.tileSprite(0, 102, 1200, 396, 'l3_middle_s');
-    sg.mountain.fixedToCamera = true;
-    sg.mountain.autoScroll(-75,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-    // sg.mountain.anchor.setTo(0,0.5);
+   //  sg.mountain = game.add.tileSprite(0, 102, 1200, 396, 'l3_middle_s');
+   //  sg.mountain.fixedToCamera = true;
+   //  sg.mountain.autoScroll(-75,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+   //  // sg.mountain.anchor.setTo(0,0.5);
 
-    sg.front = game.add.tileSprite(0, 0, 1200, 162, 'l3_front_s');
-    sg.front.fixedToCamera = true;
-    sg.front.autoScroll(-115,0);
+   //  sg.front = game.add.tileSprite(0, 0, 1200, 162, 'l3_front_s');
+   //  sg.front.fixedToCamera = true;
+   //  sg.front.autoScroll(-115,0);
 
-    sg.fronttwo = game.add.tileSprite(0, 600-81, 1200, 162, 'l3_front_s');
-    sg.fronttwo.fixedToCamera = true;
-    sg.fronttwo.autoScroll(-115,0);
-    sg.fronttwo.anchor.setTo(0,0.5)
-    sg.fronttwo.scale.y = -1;
-    break;
+   //  sg.fronttwo = game.add.tileSprite(0, 600-81, 1200, 162, 'l3_front_s');
+   //  sg.fronttwo.fixedToCamera = true;
+   //  sg.fronttwo.autoScroll(-115,0);
+   //  sg.fronttwo.anchor.setTo(0,0.5)
+   //  sg.fronttwo.scale.y = -1;
+   //  break;
 
-    default:
-    break;
+   //  default:
+   //  break;
 
-   }
+   // }
       
     
   },
-    
-  fireBullet: function(isHeld){
 
-    var sg = this;
-    
-   // if (this.game.time.time - sg.player.lastFire  > sg.fireRate){
-     // blaster.play(); // move this to individual weapons
-      //sg.player.triple.fire(sg.player);
-    //  sg.player.beam.fire(sg.player);
-      //Do different things based on weapon type  
-      if (game.weaponType == 1){ // Basic Vitamin A gun 
-      
-        
-           sg.player.basicShot.fire(sg.player, isHeld);
-          // sg.player.missile.fire(sg.player);
-      
-      }
-
-       if (game.weaponType == 2){
-        sg.player.triple.fire(sg.player, isHeld);
-         sg.player.twin.fire(sg.player, isHeld);
-        
-
-           
-      }
-        if (game.weaponType == 3){
-        sg.player.triple.fire(sg.player, isHeld);
-         sg.player.twin.fire(sg.player, isHeld);
-        sg.player.missile.fire(sg.player, isHeld);        
-
-           
-      }
-
-      if (game.weaponType ==4){
-        sg.player.beam.fire(sg.player, isHeld);
-          sg.player.missile.fire(sg.player, isHeld);
-          sg.player.triple.fire(sg.player, isHeld);
-      }
-
-      if (game.weaponType >= 5){
-            sg.player.ring.fire(sg.player, isHeld);
-              sg.player.missile.fire(sg.player, isHeld);
-          sg.player.triple.fire(sg.player, isHeld);
-      }
-
-
-
-      //   var bullet = new Bullet(game, 200, 300);
-      //   bullet.x = sg.player.x;
-      //   bullet.y = sg.player.y;
-      //   game.add.existing(bullet);
-      //   sg.bullets.add(bullet);
-      //   sg.player.lastFire = this.game.time.time;
-      // } else if (game.weaponType == 2){
-      
-      //   var bullet = new Bullet(game, 200, 300, 0);
-      //   bullet.x = sg.player.x;
-      //   bullet.y = sg.player.y;
-      //   game.add.existing(bullet);
-      //   sg.bullets.add(bullet);
-           
-      //   var bulletDown = new Bullet(game, 200, 300, 1);
-      //   bulletDown.x = sg.player.x;
-      //   bulletDown.y = sg.player.y;
-      //   game.add.existing(bulletDown);
-      //   sg.bullets.add(bulletDown);
-
-      //   var bulletUp = new Bullet(game, 200, 300, -1);
-      //   bulletUp.x = sg.player.x;
-      //   bulletUp.y = sg.player.y;
-      //   game.add.existing(bulletUp);
-      //   sg.bullets.add(bulletUp);
-      //   sg.player.lastFire = this.game.time.time;
-      // } else if (game.weaponType == 3){
-      //   sg.fireRate = 50;
-      //   var bullet = new Bullet(game, 200, 300, 1, 'plbullet-purple');
-      //   bullet.x = sg.player.x;
-      //   bullet.y = sg.player.y;
-      //   game.add.existing(bullet);
-      //   sg.bullets.add(bullet);
-
-      //   var bulletd = new Bullet(game, 200, 300, 0, 'plbullet-purple');
-      //   bulletd.x = sg.player.x;
-      //   bulletd.y = sg.player.y;
-      //   game.add.existing(bulletd);
-      //   sg.bullets.add(bulletd);
-
-      //   var bulletu = new Bullet(game, 200, 300, -1, 'plbullet-purple');
-      //   bulletu.x = sg.player.x;
-      //   bulletu.y = sg.player.y;
-      //   game.add.existing(bulletu);
-      //   sg.bullets.add(bulletu);
-      //   sg.player.lastFire = this.game.time.time;
-      // } else if (game.weaponType >= 4){
-      //   sg.fireRate = 10;
-      //   var bulletd = new Bullet(game, 200, 300, 2, 'plbullet-green');
-      //   bulletd.x = sg.player.x;
-      //   bulletd.y = sg.player.y;
-      //   game.add.existing(bulletd);
-      //   sg.bullets.add(bulletd);
-      // } else{
-      //   var bullet = new Bullet(game, 200, 300, 1);
-      //   bullet.x = sg.player.x;
-      //   bullet.y = sg.player.y;
-      //   game.add.existing(bullet);
-      //   sg.bullets.add(bullet);
-      //   sg.player.lastFire = this.game.time.time;
-      // }
-    //}
-  },
 
   bulletWallCollider: function (bullet, wall) {
     var sg = this;
@@ -1300,6 +1147,15 @@ sg.manageBonus();
     
   },
 
+  savePlayerData: function(){
+
+
+  },
+
+  loadPlayerData: function(){
+
+  },
+  
   loseLife: function(){
     var sg = this;
     //remove a life
@@ -1428,7 +1284,7 @@ sg.manageBonus();
       } else if (sg.cursors.right.isDown) {
         sg.player.body.acceleration.x = sg.player.accel[game.playerSpeed];
       } else {
-        if (sg.player.body.velocity.x <65*sg.difficulty && sg.player.body.velocity.x >= 0 && !sg.paceStopped){
+        if (sg.player.body.velocity.x <65*game.difficulty && sg.player.body.velocity.x >= 0 && !sg.paceStopped){
           sg.player.body.velocity.x += 20;
        //   
         }
@@ -1487,10 +1343,10 @@ sg.manageBonus();
     sg.fadeOutMusic(sg.trackPlaying);
     game.time.events.add(7000, function(){sg.fadeOut(500,1.0)}, this);
     sg.gameOverSFX.play();
-    ga('send', 'event', 'betablasters', 'finished', 'score', game.score);
+    // ga('send', 'event', 'betablasters', 'finished', 'score', game.score);
     var timeEnded = Math.floor(game.time.time / 60000); // time Ended, in seconds
     var timePlayed = timeEnded - game.timeStarted;
-    ga('send', 'event', 'betablasters', 'finished', 'timePlayed', timePlayed);
+    // ga('send', 'event', 'betablasters', 'finished', 'timePlayed', timePlayed);
     //check if player is in the top 10 scores.
     var inTopTen = false;
     console.log("top scores: " + game.topScores);
@@ -1505,7 +1361,7 @@ sg.manageBonus();
   
     if (inTopTen){
       game.time.events.add(8000, function(){this.game.state.start('TopTenScore')}, this).autoDestroy = true;
-      ga('send', 'event', 'betablasters', 'earnedTopScore')
+      // ga('send', 'event', 'betablasters', 'earnedTopScore')
     } else {
       game.time.events.add(8000, function(){this.game.state.start('ScoreSummary')}, this).autoDestroy = true;
     }

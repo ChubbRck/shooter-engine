@@ -4,6 +4,7 @@ var GameTitle = function(game){};
 GameTitle.prototype = {
 
 	create: function(){
+		
 		// Make the world larger than the screen to allow for a 'rumble' shake
 		game.world.resize(1300,700);
 		game.camera.x=0;
@@ -13,14 +14,17 @@ GameTitle.prototype = {
 		game.score = 0;
 		game.level = 1;
 		game.explosionCounter = 0;
+		game.difficulty = 1;
 		game.buddyCounter = Math.floor((Math.random() * 4));
 		 // game.buddyCounter = 2;
 		game.weaponType = 1;
-		game.sound.mute = false;
+		game.sound.mute = true;
 		game.playerSpeed = 0;
 		game.introSlide = 1;
 		game.scoreMultiplier = 1.0;
 		game.lives = 3;
+		game.activePlayers = [];
+		game.playerData = []
 		game.topScores;
 		game.levels = [level1_data, level2_data, level3_data]
 		game.bonuses = [
@@ -55,19 +59,19 @@ GameTitle.prototype = {
 
 	this.menuShown = false;
 	this.choiceMade = false;
-	// this.titleBackground = game.add.sprite(0, 0, 'spacebg');
-	this.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'title-bg-back');
-    this.bgtile.fixedToCamera = true;
-    this.bgtile.autoScroll(-300,0); // on level 1 it is -20, 0
+	// // this.titleBackground = game.add.sprite(0, 0, 'spacebg');
+	// this.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'title-bg-back');
+ //    this.bgtile.fixedToCamera = true;
+ //    this.bgtile.autoScroll(-300,0); // on level 1 it is -20, 0
 
-    this.middle = game.add.tileSprite(0, 600-471, 1200, 471, 'title-bg-middle');
-    this.middle.fixedToCamera = true;
-    this.middle.autoScroll(-400,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-    // this.mountain.anchor.setTo(0.5,1.0);
+ //    this.middle = game.add.tileSprite(0, 600-471, 1200, 471, 'title-bg-middle');
+ //    this.middle.fixedToCamera = true;
+ //    this.middle.autoScroll(-400,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+ //    // this.mountain.anchor.setTo(0.5,1.0);
 
-    this.front = game.add.tileSprite(0, 600-140, 1200, 140, 'title-bg-front');
-    this.front.fixedToCamera = true;
-    this.front.autoScroll(-500,0);
+ //    this.front = game.add.tileSprite(0, 600-140, 1200, 140, 'title-bg-front');
+ //    this.front.fixedToCamera = true;
+ //    this.front.autoScroll(-500,0);
 
 
    	this.logo = game.add.sprite(1800,215, 'titlescreen-title');
@@ -221,13 +225,13 @@ GameTitle.prototype = {
 		this.titletrack.fadeOut(900)
 		game.musicAlreadyPlaying = false;
 		tween.onComplete.add(this.launchFirstLevel, this);
-		ga('send', 'event', 'betablasters', 'startedGame');
+		// ga('send', 'event', 'betablasters', 'startedGame');
 		game.timeStarted = Math.floor(game.time.time / 60000); // Time started, in seconds.
 	},
 
 	showHighScores: function(){
 		game.musicAlreadyPlaying = true;
-		ga('send', 'event', 'betablasters', 'viewedHighScores');
+		// ga('send', 'event', 'betablasters', 'viewedHighScores');
 		this.game.state.start("DisplayScores");
 	},
 	showControls: function(){
@@ -236,7 +240,7 @@ GameTitle.prototype = {
 		this.highScoreButton.input.enabled = false;
 		this.controlsReturnText.input.enabled = true;
 		var tween = game.add.tween(this.controlsScreen).to( { alpha: 1 }, 200, "Linear", true);
-		ga('send', 'event', 'betablasters', 'viewedControls');
+		// ga('send', 'event', 'betablasters', 'viewedControls');
 	},
 
 	hideControls: function(){
@@ -249,7 +253,7 @@ GameTitle.prototype = {
 
 	toggleMute: function(){ 
     	game.sound.mute = !game.sound.mute;
-    	ga('send', 'event', 'betablasters', 'hitMuteButton'); 
+    	// ga('send', 'event', 'betablasters', 'hitMuteButton'); 
     	if (game.sound.mute){
       		this.soundToggle.frame = 2;
     	} else {
@@ -258,33 +262,37 @@ GameTitle.prototype = {
   	},
 
 	launchFirstLevel: function(){
-		this.game.state.start("Cutscene");
+		// for now, go right to gameplay
+
+		//this.game.state.start("Cutscene");
+		this.game.state.start("Gameplay");
 	},
 
 	retrieveScores: function(){
-		var request = new XMLHttpRequest();
-		var path = "php/getscore.php";
-		//var path = "/wp-content/themes/lycored/getscore.php"
-		request.open('GET', path, true);
+		// for now, disable scoreboard functionality.
+		// var request = new XMLHttpRequest();
+		// var path = "php/getscore.php";
+		// //var path = "/wp-content/themes/lycored/getscore.php"
+		// request.open('GET', path, true);
 
-		request.onload = function(){
-			if (request.status >= 200 && request.status < 400){
-				// Suceess
-				var data = JSON.parse(request.responseText);
-				console.log(data);
-				game.topScores = data;
-				// launch timer to go to score screen
-			} else {
-				// we reached our target server but error
-			}
+		// request.onload = function(){
+		// 	if (request.status >= 200 && request.status < 400){
+		// 		// Suceess
+		// 		var data = JSON.parse(request.responseText);
+		// 		console.log(data);
+		// 		game.topScores = data;
+		// 		// launch timer to go to score screen
+		// 	} else {
+		// 		// we reached our target server but error
+		// 	}
 
-		};
+		//};
 	
 
-		request.onerror = function(){
-			// error
-		};
+		// request.onerror = function(){
+		// 	// error
+		// };
 
-		request.send();
+		// request.send();
 	}
 }
