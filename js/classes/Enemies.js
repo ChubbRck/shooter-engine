@@ -62,13 +62,15 @@ Enemy.prototype.update = function() {
 
 // Basic enemy that does not move
 var Chiller = function (game, x, y){
-  Enemy.call(this, game, x, y, 0, 'static-enemy', 0);
+  this.video = game.add.video('test2webm');
+  this.video.play(true);
+  Enemy.call(this, game, x, y, 0, this.video, 0);
   this.baseVelocity = 0;
   this.bulletsRef = null;
   this.doesFire = false;
   this.fireChance = 33;
   this.lastFire = 0;
-  this.rotateRate = 5 + Math.random()*3;
+  this.rotateRate = 0;
   this.enemyType = "chiller";
   this.blaster = game.add.audio('testblip1', 0.2);
 

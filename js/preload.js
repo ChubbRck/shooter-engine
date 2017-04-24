@@ -250,6 +250,11 @@ Preload.prototype = {
 
 		game.load.bitmapFont('tandysoft', path + 'fonts/tandysoft.png',  path + 'fonts/tandysoft.fnt');
 		game.load.bitmapFont('coders', path + 'fonts/coders.png',  path + 'fonts/coders.fnt');
+
+		// Testing video 
+		this.game.load.video('nyan',  path + 'enemies/100.mp4');
+		this.game.load.video('test2webm',  path + 'enemies/test2.webm');
+
 	},
 
 	create: function(){
