@@ -12,6 +12,7 @@ var Enemy = function (game, x, y, launchOffset, img, baseVelocity) {
   this.launchOffset = !launchOffset ? this.launchOffset = 0 : this.launchOffset = launchOffset;
   
   Phaser.Sprite.call(this, game, x, y, img);
+
   this.renderable = false;
   this.game = game;
   this.width = 60;
@@ -24,11 +25,16 @@ var Enemy = function (game, x, y, launchOffset, img, baseVelocity) {
   this.pointValue = 100;
   this.rotateFactor = baseVelocity/50;
   game.physics.arcade.enable(this);
+  game.debug.body(this);
 };
 
 // Basic parent enemy class
 Enemy.prototype = Object.create(Phaser.Sprite.prototype);
 Enemy.prototype.constructor = Enemy;
+
+Enemy.prototype.render = function(){
+  game.debug.body(this);
+}
 
 Enemy.prototype.launch = function (){
   this.renderable = true;

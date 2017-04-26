@@ -9,8 +9,8 @@ Preload.prototype = {
 		
 		// Set up the assets loaded in boot.js
 		game.stage.backgroundColor = '#000';
-		
-		this.lycoloading = game.add.sprite(120,120,'lycoloading');
+		game.stage.backgroundColor = "#ff0000";
+		this.lycoloading = game.add.sprite(120,120,'dfd');
 	   	this.lycoloading.anchor.setTo(0.5,0.5);
 	   	this.lycoloading.x = game.width/2;
 	   	this.lycoloading.y = game.height/2;

@@ -77,15 +77,15 @@ Gameplay.prototype = {
 
     // Create the player(s). This should be a create player function eventually.
     sg.player = new Player(game, 500, 200, sg.bullets, game.difficulty);
-    sg.playerTwo = new Player(game, 600, 100, sg.bullets, game.difficulty);
+    // sg.playerTwo = new Player(game, 600, 100, sg.bullets, game.difficulty);
     game.add.existing(sg.player)
-    game.add.existing(sg.playerTwo)
+    // game.add.existing(sg.playerTwo)
     sg.player.x = sg.warpPoint + 500;
-    sg.playerTwo.x = sg.warpPoint + 600;
+    // sg.playerTwo.x = sg.warpPoint + 600;
     game.activePlayers.push(sg.player);
-    game.activePlayers.push(sg.playerTwo);
+    // game.activePlayers.push(sg.playerTwo);
     sg.players.add(sg.player);
-    sg.players.add(sg.playerTwo);
+    // sg.players.add(sg.playerTwo);
 
 
     if (game.level == 3){
@@ -153,7 +153,7 @@ Gameplay.prototype = {
     // var lgexplosion = new LargeExplosion(game, game.camera.x+300, 300, 30, 100);
     // sg.enemies.add(boss)
 
-    
+    game.stage.backgroundColor = "#ff0000";
     // Handle mute UI and functions
     sg.soundToggle = sg.game.add.button(1120, 530, 'mute-sprite', sg.toggleMute, sg);
     sg.soundToggle.width = 44;
@@ -926,84 +926,84 @@ Gameplay.prototype = {
 
   createBackground: function(){ //Need to tie this to level data later
     var sg = this;
-    Create the background
-   switch(game.level){
-    case 1:
+    //Create the background
+   // switch(game.level){
+   //  case 1:
 
-    sg.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'l1_back');
-    sg.bgtile.fixedToCamera = true;
-    sg.bgtile.autoScroll(-30,0); // on level 1 it is -20, 0
+   //  sg.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'l1_back');
+   //  sg.bgtile.fixedToCamera = true;
+   //  sg.bgtile.autoScroll(-30,0); // on level 1 it is -20, 0
 
-    sg.mountain = game.add.tileSprite(0, 0, 1200, 600, 'l1_middle');
-    sg.mountain.fixedToCamera = true;
-    sg.mountain.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-    // sg.mountain.anchor.setTo(0.5,1.0);
+   //  sg.mountain = game.add.tileSprite(0, 0, 1200, 600, 'l1_middle');
+   //  sg.mountain.fixedToCamera = true;
+   //  sg.mountain.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+   //  // sg.mountain.anchor.setTo(0.5,1.0);
 
-    sg.front = game.add.tileSprite(0, 0, 1200, 600, 'l1_front');
-    sg.front.fixedToCamera = true;
-    sg.front.autoScroll(-105,0);
-    break;
-    case 2:
-     sg.bgtile = game.add.tileSprite(0, 136 , 1200, 374, 'l2_back');
-    sg.bgtile.fixedToCamera = true;
-    sg.bgtile.autoScroll(-30,0); // on level 1 it is -20, 0
+   //  sg.front = game.add.tileSprite(0, 0, 1200, 600, 'l1_front');
+   //  sg.front.fixedToCamera = true;
+   //  sg.front.autoScroll(-105,0);
+   //  break;
+   //  case 2:
+   //   sg.bgtile = game.add.tileSprite(0, 136 , 1200, 374, 'l2_back');
+   //  sg.bgtile.fixedToCamera = true;
+   //  sg.bgtile.autoScroll(-30,0); // on level 1 it is -20, 0
 
-    sg.middle_top = game.add.tileSprite(0, 0, 1200, 192, 'l2_middle_top');
-    sg.middle_top.fixedToCamera = true;
-    sg.middle_top.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+   //  sg.middle_top = game.add.tileSprite(0, 0, 1200, 192, 'l2_middle_top');
+   //  sg.middle_top.fixedToCamera = true;
+   //  sg.middle_top.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
 
-    sg.middle_bottom = game.add.tileSprite(0, 600-146, 1200, 146, 'l2_middle_bottom');
-    sg.middle_bottom.fixedToCamera = true;
-    sg.middle_bottom.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-    // sg.mountain.anchor.setTo(0.5,1.0);
+   //  sg.middle_bottom = game.add.tileSprite(0, 600-146, 1200, 146, 'l2_middle_bottom');
+   //  sg.middle_bottom.fixedToCamera = true;
+   //  sg.middle_bottom.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+   //  // sg.mountain.anchor.setTo(0.5,1.0);
 
-    sg.front_top = game.add.tileSprite(0, 0, 1200, 166, 'l2_front_top');
-    sg.front_top.fixedToCamera = true;
-    sg.front_top.autoScroll(-105,0);
+   //  sg.front_top = game.add.tileSprite(0, 0, 1200, 166, 'l2_front_top');
+   //  sg.front_top.fixedToCamera = true;
+   //  sg.front_top.autoScroll(-105,0);
 
-    sg.front_bottom = game.add.tileSprite(0, 600-120, 1200, 120, 'l2_front_bottom');
-    sg.front_bottom.fixedToCamera = true;
-    sg.front_bottom.autoScroll(-105,0);
-    break;
+   //  sg.front_bottom = game.add.tileSprite(0, 600-120, 1200, 120, 'l2_front_bottom');
+   //  sg.front_bottom.fixedToCamera = true;
+   //  sg.front_bottom.autoScroll(-105,0);
+   //  break;
 
-    case 3:
-    //  sg.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'l3_back');
-    // sg.bgtile.fixedToCamera = true;
-    // sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
+   //  case 3:
+   //  //  sg.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'l3_back');
+   //  // sg.bgtile.fixedToCamera = true;
+   //  // sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
 
-    // sg.mountain = game.add.tileSprite(0, 0, 1200, 600, 'l3_middle');
-    // sg.mountain.fixedToCamera = true;
-    // sg.mountain.autoScroll(-75,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-    // // sg.mountain.anchor.setTo(0.5,1.0);
+   //  // sg.mountain = game.add.tileSprite(0, 0, 1200, 600, 'l3_middle');
+   //  // sg.mountain.fixedToCamera = true;
+   //  // sg.mountain.autoScroll(-75,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+   //  // // sg.mountain.anchor.setTo(0.5,1.0);
 
-    //  sg.front = game.add.tileSprite(0, 0, 1200, 600, 'l3_front');
-    // sg.front.fixedToCamera = true;
-    // sg.front.autoScroll(-115,0);
+   //  //  sg.front = game.add.tileSprite(0, 0, 1200, 600, 'l3_front');
+   //  // sg.front.fixedToCamera = true;
+   //  // sg.front.autoScroll(-115,0);
 
-    sg.bgtile = game.add.tileSprite(0, 154, 1200, 292, 'l3_back_s2');
-    sg.bgtile.fixedToCamera = true;
-    sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
+   //  sg.bgtile = game.add.tileSprite(0, 154, 1200, 292, 'l3_back_s2');
+   //  sg.bgtile.fixedToCamera = true;
+   //  sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
 
-    sg.mountain = game.add.tileSprite(0, 102, 1200, 396, 'l3_middle_s');
-    sg.mountain.fixedToCamera = true;
-    sg.mountain.autoScroll(-75,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-    // sg.mountain.anchor.setTo(0,0.5);
+   //  sg.mountain = game.add.tileSprite(0, 102, 1200, 396, 'l3_middle_s');
+   //  sg.mountain.fixedToCamera = true;
+   //  sg.mountain.autoScroll(-75,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+   //  // sg.mountain.anchor.setTo(0,0.5);
 
-    sg.front = game.add.tileSprite(0, 0, 1200, 162, 'l3_front_s');
-    sg.front.fixedToCamera = true;
-    sg.front.autoScroll(-115,0);
+   //  sg.front = game.add.tileSprite(0, 0, 1200, 162, 'l3_front_s');
+   //  sg.front.fixedToCamera = true;
+   //  sg.front.autoScroll(-115,0);
 
-    sg.fronttwo = game.add.tileSprite(0, 600-81, 1200, 162, 'l3_front_s');
-    sg.fronttwo.fixedToCamera = true;
-    sg.fronttwo.autoScroll(-115,0);
-    sg.fronttwo.anchor.setTo(0,0.5)
-    sg.fronttwo.scale.y = -1;
-    break;
+   //  sg.fronttwo = game.add.tileSprite(0, 600-81, 1200, 162, 'l3_front_s');
+   //  sg.fronttwo.fixedToCamera = true;
+   //  sg.fronttwo.autoScroll(-115,0);
+   //  sg.fronttwo.anchor.setTo(0,0.5)
+   //  sg.fronttwo.scale.y = -1;
+   //  break;
 
-    default:
-    break;
+   //  default:
+   //  break;
 
-   }
+   // }
       
     
   },
@@ -1026,7 +1026,10 @@ Gameplay.prototype = {
     render: function(){
        //  this.finalBoss.forEachAlive(this.renderGroup, this);
      // this.finalBoss.forEachAlive(this.renderGroup, this);
-
+game.debug.body(this.player, "#9090ff", false); 
+   this.enemies.forEachAlive(game.debug.body,game.debug,"#ff9090",false); 
+      this.powerups.forEach(game.debug.body,game.debug,"#dd00dd",false);  
+      
            //game.debug.text(game.time.fps || '--', 2, 14, "#00ff00");   
   },
 

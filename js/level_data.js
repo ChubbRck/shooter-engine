@@ -1,6 +1,6 @@
 var screens = [0,1200,2400,3600,4800,6000,7200,8400,9600,10800,12000,13200,14400,15600,16800,18000,19200,20400,21600,22800, 24000, 25200, 26400, 27600, 28800, 30000];
 var xSlots = [0,100,200,300,400,500,600,700,800,900,1000,1100,1200];
-var ySlots = [0,100,200,300,400,500,600]
+var ySlots = [0,100,200,300,400,500,600,700,800]
 
 var level1_data = {
     pace : 1,
@@ -25,20 +25,15 @@ var level1_data = {
         {"quantity": "wave", "type": "sine", "how_many": 5, "x": screens[2]+xSlots[5], "y": ySlots[4], "baseVelocity": -150},
         {"quantity": "single", "type": "upAndDown", "x": screens[2]+xSlots[4], "y": ySlots[1]},
         {"quantity": "single", "type": "upAndDown", "x": screens[2]+xSlots[5], "y": ySlots[1]},
-        {"quantity": "single", "type": "wall", "x": screens[2]+xSlots[6], "y": ySlots[6], "height":300, "width":300},
         {"quantity": "wave", "type": "sine", "how_many": 10, "x": screens[2]+xSlots[9], "y": ySlots[1], "baseVelocity": -175},
-        {"quantity": "single", "type": "wall", "x": screens[2]+xSlots[9], "y": ySlots[6], "height":100, "width":1200},
-        {"quantity": "single", "type": "wall", "x": screens[2]+xSlots[9], "y": ySlots[6], "height":100, "width":1200},
         {"quantity": "wave", "type": "bouncer", "how_many": 5, "x": screens[2]+xSlots[9]+50, "y": ySlots[4] },
         {"quantity": "wave", "type": "bouncer", "how_many": 5, "x": screens[2]+xSlots[10], "y": ySlots[4] },
         {"quantity": "single", "type": "powerup", "x": screens[2]+xSlots[9] + 30, "y": ySlots[4], "powerupType": "weapon"},
-        {"quantity": "single", "type": "wall", "x": screens[3]+xSlots[1], "y": ySlots[2], "height":200, "width":400},
         {"quantity": "single", "type": "chiller", "x": screens[3]+xSlots[3], "y": ySlots[3]-50},
         {"quantity": "single", "type": "chiller", "x": screens[3]+xSlots[3], "y": ySlots[4]-50},
         {"quantity": "single", "type": "chiller", "x": screens[3]+xSlots[3], "y": ySlots[5]-50},
         {"quantity": "single", "type": "powerup", "x": screens[3]+xSlots[5], "y": ySlots[4]-50, "powerupType": "lycocoin"},
         {"quantity": "wave", "type": "chiller", "how_many": 10, "x":  screens[3]+xSlots[6], "y": ySlots[3]},
-        {"quantity": "single", "type": "wall", "x": screens[3]+xSlots[10], "y": ySlots[4], "height":200, "width":400},
         {"quantity": "single", "type": "chiller", "x": screens[3]+xSlots[11], "y": ySlots[5]},
         {"quantity": "single", "type": "chiller", "x": screens[3]+xSlots[12], "y": ySlots[5]},
         {"quantity": "single", "type": "chiller", "x": screens[4]+xSlots[1], "y": ySlots[5]},
@@ -56,7 +51,6 @@ var level1_data = {
         {"quantity": "wave", "type": "enemy", "how_many": 5, "x": screens[5]+xSlots[5], "y": ySlots[2], "baseVelocity": -285},
         {"quantity": "wave", "type": "enemy", "how_many": 5, "x": screens[5]+xSlots[5], "y": ySlots[4], "baseVelocity": -285},
         {"quantity": "wave", "type": "upAndDown", "how_many": 20, "x": screens[4]+xSlots[6], "y": ySlots[1], "baseVelocity": -215},
-        {"quantity": "single", "type": "wall", "x": screens[5]+xSlots[6], "y": ySlots[4] - 50, "height":225, "width":600},
         {"quantity": "single", "type": "chiller", "x": screens[5]+xSlots[6], "y": 80 },
         {"quantity": "single", "type": "chiller", "x": screens[5]+xSlots[7], "y": 80 },
         {"quantity": "single", "type": "chiller", "x": screens[5]+xSlots[8], "y": 80 },
@@ -70,8 +64,6 @@ var level1_data = {
         {"quantity": "wave", "type": "seeker", "how_many": 7, "x": screens[6]+xSlots[3]},
         {"quantity": "wave", "type": "seeker", "how_many": 6, "x": screens[6]+xSlots[4]},
         {"quantity": "single", "type": "powerup", "x": screens[6]+xSlots[5] - 50, "y": ySlots[1], "powerupType": "lycocoin"},
-        {"quantity": "single", "type": "wall", "x": screens[6]+xSlots[5], "y": ySlots[6], "height":200, "width":300},
-        {"quantity": "single", "type": "wall", "x": screens[6]+xSlots[5], "y": ySlots[2], "height":200, "width":300},
         {"quantity": "wave", "type": "enemy", "how_many": 20, "x": screens[6]+xSlots[10], "y": ySlots[3], "baseVelocity": -255},
         {"quantity": "single", "type": "powerup", "x": screens[6]+xSlots[11], "y": ySlots[3], "powerupType": "weapon"},
         {"quantity": "single", "type": "miniboss", "x": screens[7]+xSlots[5], "y": ySlots[3], "launchVel" : -400, "retreatPoint" : 120, "bossFlag": true, "behaviorType": 1, "img": "miniboss-1"},

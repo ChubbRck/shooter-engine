@@ -1,7 +1,7 @@
 // Player.js: a class for an individual player
 var Player = function (game, x, y, bulletsRef, playerID, controllerID) {
 
-    Phaser.Sprite.call(this, game, 500, 200, 'blake-sprite-v3');
+    Phaser.Sprite.call(this, game, 500, 200, 'blake-sdprite-v3');
     this.bulletsRef = bulletsRef;
     this.playerID = playerID;
     this.controllerID = controllerID;
@@ -74,6 +74,9 @@ Player.prototype.constructor = Player;
 // ----------------------------------------------------
 // Core create and update functions for Player.js
 // ----------------------------------------------------
+Player.prototype.render = function(){
+  game.debug.body(this);
+}
 
 
 Player.prototype.update = function() {
@@ -194,28 +197,29 @@ Player.prototype.updateEmitter = function(){
 Player.prototype.fireBullet = function(isHeld){
 
       // TODO: this.weaponType needs to get values from the game to persist data between levels
-      if (this.weaponType == 1){ // Basic Vitamin A gun 
+      console.log(game.weaponType)
+      if (game.weaponType == 1){ // Basic Vitamin A gun 
         this.basicShot.fire(this, isHeld);
       }
 
-      if (this.weaponType == 2){
+      if (game.weaponType == 2){
         this.triple.fire(this, isHeld);
         this.twin.fire(this, isHeld);   
       }
 
-      if (this.weaponType == 3){
+      if (game.weaponType == 3){
         this.triple.fire(this, isHeld);
         this.twin.fire(this, isHeld);
         this.missile.fire(this, isHeld);           
       }
 
-      if (this.weaponType ==4){
+      if (game.weaponType ==4){
         this.beam.fire(this, isHeld);
         this.missile.fire(this, isHeld);
         this.triple.fire(this, isHeld);
       }
 
-      if (this.weaponType >= 5){
+      if (game.weaponType >= 5){
         this.ring.fire(this, isHeld);
         this.missile.fire(this, isHeld);
         this.triple.fire(this, isHeld);

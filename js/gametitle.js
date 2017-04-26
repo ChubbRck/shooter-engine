@@ -6,7 +6,7 @@ GameTitle.prototype = {
 	create: function(){
 		
 		// Make the world larger than the screen to allow for a 'rumble' shake
-		game.world.resize(1300,700);
+		// game.world.resize(1300,700);
 		game.camera.x=0;
 		game.camera.y=0;	
 		game.version = "1.3"
@@ -74,11 +74,11 @@ GameTitle.prototype = {
  //    this.front.autoScroll(-500,0);
 
 
-   	this.logo = game.add.sprite(1800,215, 'titlescreen-title');
+   	this.logo = game.add.sprite(game.width/2,215, 'titlfescreen-title');
    	this.logo.anchor.setTo(0.5,0.5);
 	this.logo.smoothed = false;
 
-	this.titleLogo = game.add.sprite(600,200, 'titlescreen-title-sheet');
+	this.titleLogo = game.add.sprite(game.width/2,200, 'titlesfcreen-title-sheet');
    	this.titleLogo.anchor.setTo(0.5,0.5);
 	this.titleLogo.smoothed = false;
 	this.titleLogo.animations.add('run', [6,6,6,6,6,0,1,2,3,4,5,6]);
@@ -87,7 +87,7 @@ GameTitle.prototype = {
 	this.titleLogo.scale.y = 0.1;
 
 
-	this.subtitle = game.add.sprite(-1800,300, 'titlescreen-subtitle');
+	this.subtitle = game.add.sprite(-1800,300, 'titlescrfeen-subtitle');
    	this.subtitle.anchor.setTo(0.5,0.5);
 	this.subtitle.smoothed = false;
 	
@@ -115,32 +115,32 @@ GameTitle.prototype = {
 	this.timeCheck = game.time.now;
    
 
-    this.playButton = this.game.add.button(600, 350, 'title-start-button', this.startGame, this, 1,0,1);
+    this.playButton = this.game.add.button(game.width/2, 350, 'title-start-button', this.startGame, this, 1,0,1);
   	this.playButton.anchor.setTo(0.5,0)
   	this.playButton.alpha = 0;
   	
   	this.playButton.smoothed = false;
 
-  	this.controlsButton = this.game.add.button(600, 400, 'title-controls', this.showControls, this, 1,0,1);
+  	this.controlsButton = this.game.add.button(game.width/2, 400, 'title-controls', this.showControls, this, 1,0,1);
   	this.controlsButton.anchor.setTo(0.5,0)
   	this.controlsButton.alpha = 0;
 
   	this.controlsButton.smoothed = false;
 
-  	this.highScoreButton = this.game.add.button(600, 450, 'title-high-scores', this.showHighScores, this, 1,0,1);
+  	this.highScoreButton = this.game.add.button(game.width/2, 450, 'title-high-scores', this.showHighScores, this, 1,0,1);
   	this.highScoreButton.anchor.setTo(0.5,0)
   	this.highScoreButton.alpha = 0;
 
   	this.highScoreButton.smoothed = false;
 
 
-  	this.copyrightText = this.game.add.sprite(600, 550, 'title-copyright');
+  	this.copyrightText = this.game.add.sprite(game.width/2, 550, 'titdle-copyright');
   	this.copyrightText.anchor.setTo(0.5,0)
   	this.copyrightText.alpha = 0;
  
   	this.copyrightText.smoothed = false;
 
-  	this.soundToggle = this.game.add.button(1120, 530, 'mute-sprite', this.toggleMute, this);
+  	this.soundToggle = this.game.add.button(game.width-80, game.height-70, 'mute-sprite', this.toggleMute, this);
     this.soundToggle.width = 44;
     this.soundToggle.height = 28;
     this.soundToggle.frame = 1;
@@ -152,7 +152,7 @@ GameTitle.prototype = {
 
   	this.controlsScreen = game.add.group();
   	this.controlsBg = game.add.sprite(0,0,'controls-screen');
-  	this.controlsReturnText = game.add.button(600,485,'controls-return', this.hideControls, this, 1,0,1);
+  	this.controlsReturnText = game.add.button(game.width/2,485,'controls-return', this.hideControls, this, 1,0,1);
   	this.controlsReturnText.anchor.setTo(0.5,0);
   	this.controlsScreen.alpha = 0;
   	this.controlsReturnText.input.enabled = false;
@@ -170,7 +170,7 @@ GameTitle.prototype = {
 		this.titletrack.play();
 	}
 
-	this.whiteCurtain = game.add.sprite(-100,-100, 'white');
+	this.whiteCurtain = game.add.sprite(0,0, 'white');
   	this.whiteCurtain.alpha = 0;
 
   	var tween = game.add.tween(this.whiteCurtain).to( { alpha: .01}, 490, "Linear")
