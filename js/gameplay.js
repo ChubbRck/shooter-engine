@@ -981,38 +981,38 @@ Gameplay.prototype = {
     // sg.front.fixedToCamera = true;
     // sg.front.autoScroll(-115,0);
 
-    // sg.bgtile = game.add.tileSprite(0, 0, 1280, 720, 'd1-bg');
-    // sg.bgtile.fixedToCamera = true;
-    // sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
-
-    // sg.mountain = game.add.tileSprite(0, 0, 1280, 720, 'd1-middle');
-    // sg.mountain.fixedToCamera = true;
-    // sg.mountain.autoScroll(-75,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-    // // sg.mountain.anchor.setTo(0,0.5);
-
-    // sg.front = game.add.tileSprite(0, 0, 1280, 720, 'd1-front');
-    // sg.front.fixedToCamera = true;
-    // sg.front.autoScroll(-115,0);
-
-
-      sg.bgback = game.add.tileSprite(0, 0, 1280, 720, 'd2-bg');
-    sg.bgback.fixedToCamera = true;
-    sg.bgback.autoScroll(0,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-    // sg.mountain.anchor.setTo(0,0.5);
-
-
-    sg.bgtile = game.add.tileSprite(0, 0, 1280, 720, 'd2-back');
+    sg.bgtile = game.add.tileSprite(0, 0, 1280, 720, 'd1-bg');
     sg.bgtile.fixedToCamera = true;
     sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
 
-    sg.mountain = game.add.tileSprite(0, 0, 1280, 720, 'd2-middle');
+    sg.mountain = game.add.tileSprite(0, 0, 1280, 720, 'd1-middle');
     sg.mountain.fixedToCamera = true;
-    sg.mountain.autoScroll(-60,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+    sg.mountain.autoScroll(-75,0); // on level 2 it is -65, 0 (was 85 on lv 2)
     // sg.mountain.anchor.setTo(0,0.5);
 
-    sg.front = game.add.tileSprite(0, 0, 1280, 720, 'd2-front');
+    sg.front = game.add.tileSprite(0, 0, 1280, 720, 'd1-front');
     sg.front.fixedToCamera = true;
-    sg.front.autoScroll(-80, 0)
+    sg.front.autoScroll(0,0);
+
+
+    //   sg.bgback = game.add.tileSprite(0, 0, 1280, 720, 'd2-bg');
+    // sg.bgback.fixedToCamera = true;
+    // sg.bgback.autoScroll(0,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+    // // sg.mountain.anchor.setTo(0,0.5);
+
+
+    // sg.bgtile = game.add.tileSprite(0, 0, 1280, 720, 'd2-back');
+    // sg.bgtile.fixedToCamera = true;
+    // sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
+
+    // sg.mountain = game.add.tileSprite(0, 0, 1280, 720, 'd2-middle');
+    // sg.mountain.fixedToCamera = true;
+    // sg.mountain.autoScroll(-60,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+    // // sg.mountain.anchor.setTo(0,0.5);
+
+    // sg.front = game.add.tileSprite(0, 0, 1280, 720, 'd2-front');
+    // sg.front.fixedToCamera = true;
+    // sg.front.autoScroll(-80, 0)
 
     break;
 
