@@ -9,16 +9,16 @@ GameTitle.prototype = {
 		// game.world.resize(1300,700);
 		game.camera.x=0;
 		game.camera.y=0;	
-		game.version = "1.3"
+		game.version = "0.1"
 		// Set some global variables to be carried across scenes
 		game.score = 0;
-		game.level = 1;
+		game.level = 2;
 		game.explosionCounter = 0;
 		game.difficulty = 1;
 		game.buddyCounter = Math.floor((Math.random() * 4));
 		 // game.buddyCounter = 2;
 		game.weaponType = 1;
-		game.sound.mute = true;
+		game.sound.mute = false;
 		game.playerSpeed = 0;
 		game.introSlide = 1;
 		game.scoreMultiplier = 1.0;
@@ -57,8 +57,36 @@ GameTitle.prototype = {
 			{"label" : "BETA BLASTER", "threshold":500000},
 		];
 
-	this.menuShown = false;
-	this.choiceMade = false;
+		game.enemy_one = game.add.video('dynamic_enemy_one');
+  		game.enemy_one.play(true);
+
+  		game.enemy_two = game.add.video('dynamic_enemy_two');
+  		game.enemy_two.play(true);
+
+  		game.enemy_three = game.add.video('dynamic_enemy_three');
+  		game.enemy_three.play(true);
+
+  		game.enemy_four = game.add.video('dynamic_enemy_four');
+  		game.enemy_four.play(true);
+
+  		game.powerup_one = game.add.video('dynamic_powerup_one');
+  		game.powerup_one.play(true);
+
+  		game.powerup_two = game.add.video('dynamic_powerup_two');
+  		game.powerup_two.play(true);
+
+  		game.powerup_three = game.add.video('dynamic_powerup_three');
+  		game.powerup_three.play(true);
+
+  		game.companion = game.add.video('dynamic_companion');
+  		game.companion.play(true);
+
+
+  		game.d_miniboss = game.add.video('dynamic_miniboss');
+  		game.d_miniboss.play(true);
+
+		this.menuShown = false;
+		this.choiceMade = false;
 	// // this.titleBackground = game.add.sprite(0, 0, 'spacebg');
 	// this.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'title-bg-back');
  //    this.bgtile.fixedToCamera = true;
@@ -160,7 +188,7 @@ GameTitle.prototype = {
   	this.controlsScreen.add(this.controlsBg);
   	this.controlsScreen.add(this.controlsReturnText);
 
-  	this.versionText = game.add.text(2,603,"V"+game.version, {fill:'white', font:'16px Coders', align: 'left', wordWrap: true, wordWrapWidth:700, });
+  	this.versionText = game.add.text(2,game.height - 25,"V"+game.version, {fill:'white', font:'16px Coders', align: 'left', wordWrap: true, wordWrapWidth:700, });
 	this.versionText.anchor.setTo(0,1)
 	this.versionText.alpha = 0.3;
 

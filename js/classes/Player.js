@@ -173,7 +173,7 @@ Player.prototype.assignControls = function(whichPlayer){
       this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.S);
       // this.downKey.onDown.add(this.moveDown, this);
 
-      this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.T);
+      this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
       // this.fireButton.onDown.add(function(){this.fireBullet(false)}, this);
       break;
       case 2:

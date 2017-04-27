@@ -1,7 +1,8 @@
 // buddy.js - a class describing the behavior of AI 'buddies' who join the player during gameplay
 var Buddy = function (game, x, y, buddyType, playerRef, bulletsRef, enemiesRef, badbulletsRef) {
     
-    this.buddyType = buddyType; 
+    // this.buddyType = buddyType; 
+    this.buddyType = 1;
     this.player = playerRef;
     this.isFiring = true;
 
@@ -40,7 +41,7 @@ var Buddy = function (game, x, y, buddyType, playerRef, bulletsRef, enemiesRef, 
 
             break;
         case 1:
-            Phaser.Sprite.call(this, game, x, y, 'buddy_ll');
+            Phaser.Sprite.call(this, game, x, y, game.companion);
             this.anchor.setTo(0.5, 0.5);
             this.x = this.player.x - 50;
             this.y = this.player.y + 100;
@@ -48,8 +49,8 @@ var Buddy = function (game, x, y, buddyType, playerRef, bulletsRef, enemiesRef, 
             game.physics.arcade.enable(this);
             this.introSFX = game.add.audio('vo-lordlycopene');
             this.greetingSFX = game.add.audio('vo-perhaps');
-            this.introSFX.play();
-            this.introSFX.onStop.add(function(){this.greetingSFX.play()}, this);
+            // this.introSFX.play();
+            // this.introSFX.onStop.add(function(){this.greetingSFX.play()}, this);
             var tween = game.add.tween(this).to( { alpha: 1.0 }, 500, "Linear", true);
             game.time.events.add(this.lifeTime, this.depart, this);
 
@@ -86,8 +87,8 @@ var Buddy = function (game, x, y, buddyType, playerRef, bulletsRef, enemiesRef, 
             break;
     }
 
-    this.animations.add('run');
-    this.animations.play('run', 10, true);
+    // this.animations.add('run');
+    // this.animations.play('run', 10, true);
   
     this.buddyShot = new BuddyShot(game, bulletsRef);
     this.buddyTwin = new Twin(game, bulletsRef);

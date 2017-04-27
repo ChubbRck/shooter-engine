@@ -14,6 +14,7 @@ Gameplay.prototype = {
     // game.add.plugin(Phaser.Plugin.Debug);
     
     // Get url query string for 'h' variable and fade-in applicable elements.
+    console.log(game.level)
     var difficultyModifier = sg.getUrlVars()["d"];
     sg.levels = [level1_data, level2_data, level3_data];
     game.difficulty = sg.levels[game.level - 1]["pace"];
@@ -115,7 +116,7 @@ Gameplay.prototype = {
     sg.bosstrack = game.add.audio('bosstrack', 0.45);
     sg.bosstrack.loop = true;
 
-    sg.powerup_sfx = game.add.audio('powerup', 0.2);
+    sg.powerup_sfx = game.add.audio('powerup', 0.9);
     sg.oneup = game.add.audio('vo-1up')
     sg.gameOverSFX = game.add.audio('vo-gameover');
     sg.nomnomSFX = game.add.audio('vo-nomnom', 0.5);
@@ -153,9 +154,9 @@ Gameplay.prototype = {
     // var lgexplosion = new LargeExplosion(game, game.camera.x+300, 300, 30, 100);
     // sg.enemies.add(boss)
 
-    game.stage.backgroundColor = "#ff0000";
+    // game.stage.backgroundColor = "#ff0000";
     // Handle mute UI and functions
-    sg.soundToggle = sg.game.add.button(1120, 530, 'mute-sprite', sg.toggleMute, sg);
+    sg.soundToggle = sg.game.add.button(game.width - 80, game.height-70, 'mute-sprite', sg.toggleMute, sg);
     sg.soundToggle.width = 44;
     sg.soundToggle.height = 28;
     if (game.sound.mute){
@@ -170,13 +171,13 @@ Gameplay.prototype = {
     sg.uibar.fixedToCamera = true; 
     sg.uibar.alpha = 0.4;
 
-    sg.scoreText = game.add.bitmapText(1190, -3, 'tandysoft','SCORE ' + game.score ,41);
+    sg.scoreText = game.add.bitmapText(game.width-10, -3, 'tandysoft','SCORE ' + game.score ,41);
     sg.scoreText.fixedToCamera = true;
     sg.scoreText.anchor.setTo(1.0,0);
     sg.scoreText.x = 1190;
     sg.scoreText.y = 10;
 
-    sg.levelText = game.add.bitmapText(600, -3, 'tandysoft','Level 0' + game.level ,41);
+    sg.levelText = game.add.bitmapText(game.width/2, -3, 'tandysoft','Level 0' + game.level ,41);
     sg.levelText.fixedToCamera = true;
     sg.levelText.anchor.setTo(0.5,0);
 
@@ -195,7 +196,7 @@ Gameplay.prototype = {
     sg.livesCounterText.smoothed = false;
 
     // Manage pause button
-    sg.pauseButton = sg.game.add.sprite(30, 530, 'pause');
+    sg.pauseButton = sg.game.add.sprite(30, game.height-70, 'pause');
     sg.pauseButton.inputEnabled = true;
     sg.pauseButton.fixedToCamera = true;
     sg.pauseButton.events.onInputDown.add(function(){if (!this.game.paused){this.pauseGame()}},sg);
@@ -255,17 +256,17 @@ Gameplay.prototype = {
     sg.pauseText.alpha = 1;
     sg.pauseScreen.add(sg.pauseText);
 
-    sg.resumeButton = game.add.button(600,420,'pause-resume-text');
-    sg.resumeButton.anchor.setTo(0.5,0);
+    // sg.resumeButton = game.add.button(600,420,'pause-resume-text');
+    // sg.resumeButton.anchor.setTo(0.5,0);
 
-    sg.resumeButton.input.enabled = false;
-    sg.pauseScreen.add(sg.resumeButton);
+    // sg.resumeButton.input.enabled = false;
+    // //sg.pauseScreen.add(sg.resumeButton);
 
-    sg.returnToMenuButton = game.add.button(600,465,'pause-return-to-menu-text');
-    sg.returnToMenuButton.anchor.setTo(0.5,0);
+    // sg.returnToMenuButton = game.add.button(600,465,'pause-return-to-menu-text');
+    // sg.returnToMenuButton.anchor.setTo(0.5,0);
 
-    sg.returnToMenuButton.input.enabled = false;
-    sg.pauseScreen.add(sg.returnToMenuButton);
+    // sg.returnToMenuButton.input.enabled = false;
+    // sg.pauseScreen.add(sg.returnToMenuButton);
 
     sg.fadeIn();
 
@@ -273,37 +274,37 @@ Gameplay.prototype = {
 
   pauseUpdate: function(){
 
-    var sg = this;
+    // var sg = this;
    
    
     
-    var mouseX = game.input.mousePointer.x;
-    var mouseY = game.input.mousePointer.y; 
+    // var mouseX = game.input.mousePointer.x;
+    // var mouseY = game.input.mousePointer.y; 
     
-    if (mouseX > sg.resumeButton.x - sg.resumeButton.width/2 && mouseX < sg.resumeButton.x + sg.resumeButton.width/2 && mouseY > sg.resumeButton.y && mouseY < sg.resumeButton.y + sg.resumeButton.height){
+    // if (mouseX > sg.resumeButton.x - sg.resumeButton.width/2 && mouseX < sg.resumeButton.x + sg.resumeButton.width/2 && mouseY > sg.resumeButton.y && mouseY < sg.resumeButton.y + sg.resumeButton.height){
 
-        sg.resumeButton.frame=1;
+    //     sg.resumeButton.frame=1;
         
-        if (game.input.mousePointer.isDown){
+    //     if (game.input.mousePointer.isDown){
          
-         sg.unPauseGame();
+    //      sg.unPauseGame();
           
-        }
-    } else {
-      sg.resumeButton.frame = 0;
-    }
+    //     }
+    // } else {
+    //   sg.resumeButton.frame = 0;
+    // }
 
-    if (mouseX > sg.returnToMenuButton.x - sg.returnToMenuButton.width/2 && mouseX < sg.returnToMenuButton.x + sg.returnToMenuButton.width/2 && mouseY > sg.returnToMenuButton.y && mouseY < sg.returnToMenuButton.y + sg.returnToMenuButton.height){
+    // if (mouseX > sg.returnToMenuButton.x - sg.returnToMenuButton.width/2 && mouseX < sg.returnToMenuButton.x + sg.returnToMenuButton.width/2 && mouseY > sg.returnToMenuButton.y && mouseY < sg.returnToMenuButton.y + sg.returnToMenuButton.height){
 
-        sg.returnToMenuButton.frame=1;
+    //     sg.returnToMenuButton.frame=1;
         
-        if (game.input.mousePointer.isDown){
-           sg.returnToTitle();
+    //     if (game.input.mousePointer.isDown){
+    //        sg.returnToTitle();
          
-        }
-    } else {
-      sg.returnToMenuButton.frame = 0;
-    }
+    //     }
+    // } else {
+    //   sg.returnToMenuButton.frame = 0;
+    // }
   },
     getUrlVars: function(){
       var vars = [], hash;
@@ -330,8 +331,8 @@ Gameplay.prototype = {
     
     sg.pausePlaying(sg.trackPlaying);
     var tween = game.add.tween(sg.pauseScreen).to( { alpha: 1.0 }, 100, "Linear", true);
-    sg.resumeButton.input.enabled = true;
-    sg.returnToMenuButton.input.enabled = true;
+    // sg.resumeButton.input.enabled = true;
+    // sg.returnToMenuButton.input.enabled = true;
     tween.onComplete.add(function(){sg.game.paused = true}, this);
   },
 
@@ -339,8 +340,8 @@ Gameplay.prototype = {
     var sg = this;
     sg.resumePlaying(sg.trackPlaying);
     var tween = game.add.tween(sg.pauseScreen).to( { alpha: 0 }, 100, "Linear", true);
-    sg.returnToMenuButton.input.enabled = false;
-    sg.resumeButton.input.enabled = false;
+    // sg.returnToMenuButton.input.enabled = false;
+    // sg.resumeButton.input.enabled = false;
     sg.game.paused = false;
   },
 
@@ -549,11 +550,11 @@ Gameplay.prototype = {
                 sg.enemies.add(miniboss);
                 break;
             case "spinboss":
-                var boss = new SpinBoss(game=game, x=obj.x, y=obj.y, target=sg.player, bulletsRef=sg.badbullets)
-                boss.retreatPoint = obj.retreatPoint;
-                boss.launchVel = obj.launchVel;
-                boss.bossFlag = obj.bossFlag;
-                sg.enemies.add(boss)
+                // var boss = new SpinBoss(game=game, x=obj.x, y=obj.y, target=sg.player, bulletsRef=sg.badbullets)
+                // boss.retreatPoint = obj.retreatPoint;
+                // boss.launchVel = obj.launchVel;
+                // boss.bossFlag = obj.bossFlag;
+                // sg.enemies.add(boss)
           } 
           break;
 
@@ -926,84 +927,99 @@ Gameplay.prototype = {
 
   createBackground: function(){ //Need to tie this to level data later
     var sg = this;
-    //Create the background
-   // switch(game.level){
-   //  case 1:
+   // Create the background
+   switch(game.level){
+    case 1:
 
-   //  sg.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'l1_back');
-   //  sg.bgtile.fixedToCamera = true;
-   //  sg.bgtile.autoScroll(-30,0); // on level 1 it is -20, 0
+    sg.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'l1_back');
+    sg.bgtile.fixedToCamera = true;
+    sg.bgtile.autoScroll(-30,0); // on level 1 it is -20, 0
 
-   //  sg.mountain = game.add.tileSprite(0, 0, 1200, 600, 'l1_middle');
-   //  sg.mountain.fixedToCamera = true;
-   //  sg.mountain.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-   //  // sg.mountain.anchor.setTo(0.5,1.0);
+    sg.mountain = game.add.tileSprite(0, 0, 1200, 600, 'l1_middle');
+    sg.mountain.fixedToCamera = true;
+    sg.mountain.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+    // sg.mountain.anchor.setTo(0.5,1.0);
 
-   //  sg.front = game.add.tileSprite(0, 0, 1200, 600, 'l1_front');
-   //  sg.front.fixedToCamera = true;
-   //  sg.front.autoScroll(-105,0);
-   //  break;
-   //  case 2:
-   //   sg.bgtile = game.add.tileSprite(0, 136 , 1200, 374, 'l2_back');
-   //  sg.bgtile.fixedToCamera = true;
-   //  sg.bgtile.autoScroll(-30,0); // on level 1 it is -20, 0
+    sg.front = game.add.tileSprite(0, 0, 1200, 600, 'l1_front');
+    sg.front.fixedToCamera = true;
+    sg.front.autoScroll(-105,0);
+    break;
+    // case 2:
+    //  sg.bgtile = game.add.tileSprite(0, 136 , 1200, 374, 'l2_back');
+    // sg.bgtile.fixedToCamera = true;
+    // sg.bgtile.autoScroll(-30,0); // on level 1 it is -20, 0
 
-   //  sg.middle_top = game.add.tileSprite(0, 0, 1200, 192, 'l2_middle_top');
-   //  sg.middle_top.fixedToCamera = true;
-   //  sg.middle_top.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+    // sg.middle_top = game.add.tileSprite(0, 0, 1200, 192, 'l2_middle_top');
+    // sg.middle_top.fixedToCamera = true;
+    // sg.middle_top.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
 
-   //  sg.middle_bottom = game.add.tileSprite(0, 600-146, 1200, 146, 'l2_middle_bottom');
-   //  sg.middle_bottom.fixedToCamera = true;
-   //  sg.middle_bottom.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-   //  // sg.mountain.anchor.setTo(0.5,1.0);
+    // sg.middle_bottom = game.add.tileSprite(0, 600-146, 1200, 146, 'l2_middle_bottom');
+    // sg.middle_bottom.fixedToCamera = true;
+    // sg.middle_bottom.autoScroll(-65,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+    // // sg.mountain.anchor.setTo(0.5,1.0);
 
-   //  sg.front_top = game.add.tileSprite(0, 0, 1200, 166, 'l2_front_top');
-   //  sg.front_top.fixedToCamera = true;
-   //  sg.front_top.autoScroll(-105,0);
+    // sg.front_top = game.add.tileSprite(0, 0, 1200, 166, 'l2_front_top');
+    // sg.front_top.fixedToCamera = true;
+    // sg.front_top.autoScroll(-105,0);
 
-   //  sg.front_bottom = game.add.tileSprite(0, 600-120, 1200, 120, 'l2_front_bottom');
-   //  sg.front_bottom.fixedToCamera = true;
-   //  sg.front_bottom.autoScroll(-105,0);
-   //  break;
+    // sg.front_bottom = game.add.tileSprite(0, 600-120, 1200, 120, 'l2_front_bottom');
+    // sg.front_bottom.fixedToCamera = true;
+    // sg.front_bottom.autoScroll(-105,0);
+    // break;
 
-   //  case 3:
-   //  //  sg.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'l3_back');
-   //  // sg.bgtile.fixedToCamera = true;
-   //  // sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
+    case 2:
+    //  sg.bgtile = game.add.tileSprite(0, 0, 1200, 600, 'l3_back');
+    // sg.bgtile.fixedToCamera = true;
+    // sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
 
-   //  // sg.mountain = game.add.tileSprite(0, 0, 1200, 600, 'l3_middle');
-   //  // sg.mountain.fixedToCamera = true;
-   //  // sg.mountain.autoScroll(-75,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-   //  // // sg.mountain.anchor.setTo(0.5,1.0);
+    // sg.mountain = game.add.tileSprite(0, 0, 1200, 600, 'l3_middle');
+    // sg.mountain.fixedToCamera = true;
+    // sg.mountain.autoScroll(-75,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+    // // sg.mountain.anchor.setTo(0.5,1.0);
 
-   //  //  sg.front = game.add.tileSprite(0, 0, 1200, 600, 'l3_front');
-   //  // sg.front.fixedToCamera = true;
-   //  // sg.front.autoScroll(-115,0);
+    //  sg.front = game.add.tileSprite(0, 0, 1200, 600, 'l3_front');
+    // sg.front.fixedToCamera = true;
+    // sg.front.autoScroll(-115,0);
 
-   //  sg.bgtile = game.add.tileSprite(0, 154, 1200, 292, 'l3_back_s2');
-   //  sg.bgtile.fixedToCamera = true;
-   //  sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
+    // sg.bgtile = game.add.tileSprite(0, 0, 1280, 720, 'd1-bg');
+    // sg.bgtile.fixedToCamera = true;
+    // sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
 
-   //  sg.mountain = game.add.tileSprite(0, 102, 1200, 396, 'l3_middle_s');
-   //  sg.mountain.fixedToCamera = true;
-   //  sg.mountain.autoScroll(-75,0); // on level 2 it is -65, 0 (was 85 on lv 2)
-   //  // sg.mountain.anchor.setTo(0,0.5);
+    // sg.mountain = game.add.tileSprite(0, 0, 1280, 720, 'd1-middle');
+    // sg.mountain.fixedToCamera = true;
+    // sg.mountain.autoScroll(-75,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+    // // sg.mountain.anchor.setTo(0,0.5);
 
-   //  sg.front = game.add.tileSprite(0, 0, 1200, 162, 'l3_front_s');
-   //  sg.front.fixedToCamera = true;
-   //  sg.front.autoScroll(-115,0);
+    // sg.front = game.add.tileSprite(0, 0, 1280, 720, 'd1-front');
+    // sg.front.fixedToCamera = true;
+    // sg.front.autoScroll(-115,0);
 
-   //  sg.fronttwo = game.add.tileSprite(0, 600-81, 1200, 162, 'l3_front_s');
-   //  sg.fronttwo.fixedToCamera = true;
-   //  sg.fronttwo.autoScroll(-115,0);
-   //  sg.fronttwo.anchor.setTo(0,0.5)
-   //  sg.fronttwo.scale.y = -1;
-   //  break;
 
-   //  default:
-   //  break;
+      sg.bgback = game.add.tileSprite(0, 0, 1280, 720, 'd2-bg');
+    sg.bgback.fixedToCamera = true;
+    sg.bgback.autoScroll(0,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+    // sg.mountain.anchor.setTo(0,0.5);
 
-   // }
+
+    sg.bgtile = game.add.tileSprite(0, 0, 1280, 720, 'd2-back');
+    sg.bgtile.fixedToCamera = true;
+    sg.bgtile.autoScroll(-40,0); // on level 1 it is -20, 0
+
+    sg.mountain = game.add.tileSprite(0, 0, 1280, 720, 'd2-middle');
+    sg.mountain.fixedToCamera = true;
+    sg.mountain.autoScroll(-60,0); // on level 2 it is -65, 0 (was 85 on lv 2)
+    // sg.mountain.anchor.setTo(0,0.5);
+
+    sg.front = game.add.tileSprite(0, 0, 1280, 720, 'd2-front');
+    sg.front.fixedToCamera = true;
+    sg.front.autoScroll(-80, 0)
+
+    break;
+
+    default:
+    break;
+
+   }
       
     
   },
@@ -1026,9 +1042,9 @@ Gameplay.prototype = {
     render: function(){
        //  this.finalBoss.forEachAlive(this.renderGroup, this);
      // this.finalBoss.forEachAlive(this.renderGroup, this);
-game.debug.body(this.player, "#9090ff", false); 
-   this.enemies.forEachAlive(game.debug.body,game.debug,"#ff9090",false); 
-      this.powerups.forEach(game.debug.body,game.debug,"#dd00dd",false);  
+// game.debug.body(this.player, "#9090ff", false); 
+//    this.enemies.forEachAlive(game.debug.body,game.debug,"#ff9090",false); 
+//       this.powerups.forEach(game.debug.body,game.debug,"#dd00dd",false);  
       
            //game.debug.text(game.time.fps || '--', 2, 14, "#00ff00");   
   },

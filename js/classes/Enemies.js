@@ -6,7 +6,7 @@ var Enemy = function (game, x, y, launchOffset, img, baseVelocity) {
   this.asleep = true;
     
   var img = img
-  if (!img){ img = 'straight-enemy' }
+  if (!img){ img = game.enemy_four }
 
   this.baseVelocity = !baseVelocity ? this.baseVelocity = -50 : this.baseVelocity = baseVelocity;
   this.launchOffset = !launchOffset ? this.launchOffset = 0 : this.launchOffset = launchOffset;
@@ -15,8 +15,8 @@ var Enemy = function (game, x, y, launchOffset, img, baseVelocity) {
 
   this.renderable = false;
   this.game = game;
-  this.width = 60;
-  this.height = 60;
+  // this.width = 60;
+  // this.height = 60;
   this.smoothed = false;
   this.health = 1;
   this.anchor.setTo(0.5, 0.5);
@@ -63,20 +63,19 @@ Enemy.prototype.disposeCheck = function () {
 Enemy.prototype.update = function() {
   this.disposeCheck();
   this.checkForLaunch();
-  if (!this.asleep){ this.angle += 1 * (this.rotateFactor); } 
+  if (!this.asleep){ this.angle += .1 * (this.rotateFactor); } 
 };
 
 // Basic enemy that does not move
 var Chiller = function (game, x, y){
-  this.video = game.add.video('test2webm');
-  this.video.play(true);
-  Enemy.call(this, game, x, y, 0, this.video, 0);
+  
+  Enemy.call(this, game, x, y, 0, game.enemy_one, 0);
   this.baseVelocity = 0;
   this.bulletsRef = null;
   this.doesFire = false;
   this.fireChance = 33;
   this.lastFire = 0;
-  this.rotateRate = 0;
+  this.rotateRate = 1;
   this.enemyType = "chiller";
   this.blaster = game.add.audio('testblip1', 0.2);
 
@@ -187,8 +186,8 @@ Dropper.prototype.update = function() {
 
 // Enemy that crosses path (change in y-gravity)
 var Crosser = function (game, x, y, launchOffset, img, baseVelocity, dirMod){
-  Enemy.call(this, game, x, y, launchOffset, 'cross-enemy', baseVelocity); 
-  this.rotateRate = 5;
+  Enemy.call(this, game, x, y, launchOffset, game.enemy_three, baseVelocity); 
+  this.rotateRate = 1;
   this.enemyType = "crosser";
   this.dirMod = dirMod;
 }
@@ -309,7 +308,7 @@ EnemyExt.prototype.constructor = EnemyExt;
 
 // Enemy that moves in a sinewave pattern
 var EnemySine = function (game, x, y, launchOffset, baseVelocity) {
-  Enemy.call(this, game, x, y, launchOffset, 'wave-enemy', baseVelocity);
+  Enemy.call(this, game, x, y, launchOffset, game.enemy_two, baseVelocity);
   this.startPoint = y;
   this.enemyType = "sine";
   this.pointValue = 200;
@@ -327,7 +326,7 @@ EnemySine.prototype.update = function() {
   this.disposeCheck();
   this.checkForLaunch();
   if (!this.asleep){
-    this.angle += -5; // Rotate based on speed?
+    this.angle += -.5; // Rotate based on speed?
     this.y =  this.startPoint + Math.sin(this.x/100) * 100
   }
 };
@@ -335,7 +334,7 @@ EnemySine.prototype.update = function() {
 // Enemy that homes in on the player
 var Seeker = function (game, x, y, target, baseVelocity, img) {
   if (!img){ this.img = 'seek-enemy-pink' } else {this.img = img};
-  Enemy.call(this, game, x, y, 0, this.img, baseVelocity);
+  Enemy.call(this, game, x, y, 0, game.enemy_four, baseVelocity);
   this.targ = target;
   this.pointValue = 200;
   this.body.maxVelocity.x= Math.abs(this.baseVelocity * 1.25) + Math.random()*50;
@@ -343,8 +342,8 @@ var Seeker = function (game, x, y, target, baseVelocity, img) {
   this.maxVelX = Math.abs(this.baseVelocity) + Math.random()*50; 
   this.maxVelY = Math.abs(this.baseVelocity) + Math.random()*50; 
   var framerate = 2 + Math.floor(Math.random()*15);
-  this.animations.add('go', [0,1], framerate, true);
-  this.animations.play('go');
+  // this.animations.add('go', [0,1], framerate, true);
+  // this.animations.play('go');
 };
 
 Seeker.prototype = Object.create(Enemy.prototype);
@@ -491,8 +490,9 @@ Pathfinder.prototype.pathfind = function(){
   
 // Basic MiniBoss that appears on screen, matches camera speed, follows player, and blasts at him/her.
 var MiniBoss = function (game, x, y, target, bulletsRef, behaviorType, img){
-  this.img = img
-  Enemy.call(this, game, x, y, 0, this.img, 0);
+  //this.img = img
+  Enemy.call(this, game, x, y, 0, game.d_miniboss, 0);
+  this.img = game.d_miniboss;
   this.baseVelocity = 0;
   this.behaviorType = behaviorType;
   this.health = 100; 
@@ -524,9 +524,9 @@ var MiniBoss = function (game, x, y, target, bulletsRef, behaviorType, img){
   this.retreatEvent;
   this.pace = game.levels[game.level - 1]["pace"];
   this.lockPoint = 0;
-  this.animations.add('hurt', [0,2], 30, true);
-  this.animations.add('unhurt', [0], 30, true);
-  this.animations.play('unhurt');
+  // this.animations.add('hurt', [0,2], 30, true);
+  // this.animations.add('unhurt', [0], 30, true);
+  // this.animations.play('unhurt');
 }
 
 MiniBoss.prototype = Object.create(Enemy.prototype);
@@ -557,7 +557,7 @@ MiniBoss.prototype.update = function() {
   }
   if (this.health < 25 && !this.hurt){
     this.hurt = true;
-    this.animations.play('hurt');
+   // this.animations.play('hurt');
   }
 
   this.disposeCheck();
@@ -697,9 +697,9 @@ var SpinBoss = function (game, x, y, target, bulletsRef){
   this.retreatPoint = 0;
   this.blaster = game.add.audio('testblip1', 0.2);
   this.pace = game.levels[game.level - 1]["pace"]; 
-  this.animations.add('hurt', [0,2], 30, true);
-  this.animations.add('unhurt', [0], 30, true);
-  this.animations.play('unhurt');
+  // this.animations.add('hurt', [0,2], 30, true);
+  // this.animations.add('unhurt', [0], 30, true);
+  // this.animations.play('unhurt');
 
 }
 
@@ -741,7 +741,7 @@ SpinBoss.prototype.update = function() {
 
   if (this.health < 75 && !this.hurt){
       this.hurt = true;
-      this.animations.play('hurt');
+   //   this.animations.play('hurt');
 
   }
 

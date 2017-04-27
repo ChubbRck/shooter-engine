@@ -10,9 +10,9 @@ var Powerup = function (game, x, y, powerupType, img) {
   	if (!this.powerupType){ this.powerupType = "weapon"}
 	switch(this.powerupType){
 		case "weapon":
-			Phaser.Sprite.call(this, game, x, y, img);
-			this.width = 50;
-			this.height = 50;
+			Phaser.Sprite.call(this, game, x, y, game.powerup_one);
+			// this.width = 50;
+			// this.height = 50;
 			this.anchor.setTo(0.5, 0.5);
 			game.physics.arcade.enable(this);
 			this.pointValue = 250;
@@ -20,20 +20,20 @@ var Powerup = function (game, x, y, powerupType, img) {
       this.powerupSFX = game.add.audio('vo-blasterupgrade');
 			break;
 		case "lycocoin":
-			Phaser.Sprite.call(this, game, x, y, 'lycocoin-spritesheet');
-			this.animations.add('spin');
-			this.animations.play('spin', 8, true);
-			this.width = 50;
-			this.height = 50;
+			Phaser.Sprite.call(this, game, x, y, game.powerup_three);
+			// this.animations.add('spin');
+			// this.animations.play('spin', 8, true);
+			// this.width = 50;
+			// this.height = 50;
 			this.anchor.setTo(0.5, 0.5);
 			game.physics.arcade.enable(this);
 			this.pointValue = 1000;
 			this.startPoint = y;
 			break;
 		case "speed":
-			Phaser.Sprite.call(this, game, x, y, img);
-			this.width = 50;
-			this.height = 50;
+			Phaser.Sprite.call(this, game, x, y, game.powerup_two);
+			// this.width = 50;
+			// this.height = 50;
 			this.anchor.setTo(0.5, 0.5);
 			game.physics.arcade.enable(this);
 			this.pointValue = 250;
